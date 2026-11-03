@@ -1,0 +1,6 @@
+*
+!incident_lab/
+!incident_lab/**
+!LICENSE
+**/__pycache__/
+**/*.pyc

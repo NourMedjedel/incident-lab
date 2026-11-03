@@ -1,0 +1,584 @@
+{
+  "fixture_version": "1",
+  "provenance": "Hand-authored synthetic development fixtures. No customer data.",
+  "incidents": [
+    {
+      "id": "INC-001",
+      "service": "orders-api",
+      "title": "Elevated errors after a service change",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "deploy-config",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Configuration deployment cfg-42 changed DATABASE_URL."
+        },
+        {
+          "id": "log-config",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.98; requests_per_minute=120"
+        },
+        {
+          "id": "other-service-log",
+          "kind": "log",
+          "service": "billing-api",
+          "timestamp": "2026-01-15T10:02:00Z",
+          "text": "UNHANDLED_EXCEPTION in another service."
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    },
+    {
+      "id": "INC-002",
+      "service": "orders-api",
+      "title": "Slow requests and failed checkouts",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "deploy-stable",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Application deployment release-20 completed."
+        },
+        {
+          "id": "log-upstream",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:02:00Z",
+          "text": "ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms."
+        },
+        {
+          "id": "metric-latency",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "request_p95_ms=2300; http_error_ratio=0.35"
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    },
+    {
+      "id": "INC-003",
+      "service": "orders-api",
+      "title": "Service errors after release",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "deploy-app",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Application deployment release-21 changed the order serializer."
+        },
+        {
+          "id": "log-app",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR UNHANDLED_EXCEPTION: KeyError while serializing an order."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.63; requests_per_minute=115"
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    },
+    {
+      "id": "INC-004",
+      "service": "orders-api",
+      "title": "Unexplained increase in failed requests",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "log-generic",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR request completed with status 500; trace unavailable."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.20"
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    },
+    {
+      "id": "INC-005",
+      "service": "orders-api",
+      "title": "Alert with incomplete observations",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.45"
+        },
+        {
+          "id": "future-deploy",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "Application deployment release-22 completed."
+        },
+        {
+          "id": "future-log",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:07:00Z",
+          "text": "ERROR UNHANDLED_EXCEPTION after release-22."
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    },
+    {
+      "id": "INC-006",
+      "service": "orders-api",
+      "title": "Alert while telemetry is degraded",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "deploy-config",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Configuration deployment cfg-43 completed."
+        },
+        {
+          "id": "log-config",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR CONFIG_VALIDATION_FAILED: required setting is missing."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.99"
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": [
+        "get_deployments"
+      ]
+    },
+    {
+      "id": "INC-007",
+      "service": "orders-api",
+      "title": "Requests are queued under load",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "log-pool",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached."
+        },
+        {
+          "id": "metric-pool",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "db_connections_busy=20; db_connections_max=20; queue_depth=140"
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    },
+    {
+      "id": "INC-008",
+      "service": "orders-api",
+      "title": "Several failure signals are present",
+      "cutoff": "2026-01-15T10:05:00Z",
+      "records": [
+        {
+          "id": "deploy-app",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Application deployment release-23 completed."
+        },
+        {
+          "id": "log-app",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR UNHANDLED_EXCEPTION while serializing an order."
+        },
+        {
+          "id": "log-upstream",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:02:00Z",
+          "text": "ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.67"
+        },
+        {
+          "id": "configuration@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T08:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: legacy process. Ask an operator to compare the configuration and validate required settings."
+        },
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review."
+        },
+        {
+          "id": "configuration@3",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:06:00Z",
+          "text": "FUTURE DOCUMENT: exact solution recorded after the incident. This version must not be retrievable at 10:05."
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage."
+        },
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback."
+        },
+        {
+          "id": "investigation@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "Incident investigation with missing evidence: collect logs, metrics, deployment history, and dependency health. Avoid asserting a root cause without support."
+        }
+      ],
+      "unavailable_tools": []
+    }
+  ]
+}

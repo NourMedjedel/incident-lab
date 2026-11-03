@@ -1,0 +1,275 @@
+{
+  "incident_id": "INC-007",
+  "service": "orders-api",
+  "as_of": "2026-01-15T10:05:00Z",
+  "engine": "langgraph-agent-v1",
+  "mode": "synthetic-fixture-replay",
+  "provider": "ollama",
+  "model": "qwen3:8b",
+  "prompt_version": "investigator-v1",
+  "status": "hypothesis",
+  "suspected_cause": "resource_exhaustion",
+  "explanation": "The logs indicate a connection pool exhaustion with all 20 connections busy, and the metrics show a queue depth of 140. This suggests the service is unable to handle the incoming requests due to resource exhaustion.",
+  "next_step": "Verify if the database or upstream services are experiencing high load or outages. Check if increasing the connection pool size or scaling resources can resolve the issue.",
+  "evidence_ids": [
+    "log-pool",
+    "metric-pool"
+  ],
+  "evidence": [
+    {
+      "id": "log-pool",
+      "kind": "log",
+      "service": "orders-api",
+      "timestamp": "2026-01-15T10:01:00Z",
+      "text": "ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached."
+    },
+    {
+      "id": "metric-pool",
+      "kind": "metric",
+      "service": "orders-api",
+      "timestamp": "2026-01-15T10:04:00Z",
+      "text": "db_connections_busy=20; db_connections_max=20; queue_depth=140"
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "upstream@1",
+      "kind": "runbook",
+      "service": "orders-api",
+      "timestamp": "2026-01-15T09:00:00Z",
+      "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.",
+      "retrieval_score": 1.197441
+    }
+  ],
+  "cited_runbook_ids": [
+    "upstream@1"
+  ],
+  "observations": {
+    "logs": [
+      {
+        "id": "log-pool",
+        "kind": "log",
+        "service": "orders-api",
+        "timestamp": "2026-01-15T10:01:00Z",
+        "text": "ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached."
+      }
+    ],
+    "metrics": [
+      {
+        "id": "metric-pool",
+        "kind": "metric",
+        "service": "orders-api",
+        "timestamp": "2026-01-15T10:04:00Z",
+        "text": "db_connections_busy=20; db_connections_max=20; queue_depth=140"
+      }
+    ],
+    "deployments": []
+  },
+  "trace": [
+    {
+      "sequence": 1,
+      "tool": "get_logs",
+      "arguments": {
+        "service": "orders-api"
+      },
+      "status": "ok",
+      "evidence_ids": [
+        "log-pool"
+      ],
+      "duration_ms": 0.104
+    },
+    {
+      "sequence": 2,
+      "tool": "get_metrics",
+      "arguments": {
+        "service": "orders-api"
+      },
+      "status": "ok",
+      "evidence_ids": [
+        "metric-pool"
+      ],
+      "duration_ms": 0.02
+    },
+    {
+      "sequence": 3,
+      "tool": "get_deployments",
+      "arguments": {
+        "service": "orders-api"
+      },
+      "status": "ok",
+      "evidence_ids": [],
+      "duration_ms": 0.006
+    },
+    {
+      "sequence": 4,
+      "tool": "search_runbooks",
+      "arguments": {
+        "query": "connection pool exhausted",
+        "service": "orders-api"
+      },
+      "status": "ok",
+      "evidence_ids": [
+        "upstream@1"
+      ],
+      "duration_ms": 2.286
+    }
+  ],
+  "model_trace": [
+    {
+      "turn": 1,
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "duration_ms": 32729.232,
+      "status": "ok",
+      "input_tokens": 782,
+      "output_tokens": 64,
+      "cache_tokens": 0
+    },
+    {
+      "turn": 2,
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "duration_ms": 3262.96,
+      "status": "ok",
+      "input_tokens": 1008,
+      "output_tokens": 28,
+      "cache_tokens": 0
+    },
+    {
+      "turn": 3,
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "duration_ms": 10371.335,
+      "status": "ok",
+      "input_tokens": 1141,
+      "output_tokens": 146,
+      "cache_tokens": 0
+    }
+  ],
+  "validation_errors": [],
+  "conversation": [
+    {
+      "role": "user",
+      "content": "{\"service\": \"orders-api\", \"title\": \"Requests are queued under load\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "ollama-47f10d67cdd2406eb4d820076edd6ddb",
+          "name": "get_logs",
+          "input": {
+            "service": "orders-api"
+          }
+        },
+        {
+          "type": "tool_use",
+          "id": "ollama-5467fba58b004d08b21ae21629aab41d",
+          "name": "get_metrics",
+          "input": {
+            "service": "orders-api"
+          }
+        },
+        {
+          "type": "tool_use",
+          "id": "ollama-fbe41bfd1b6c470b9795eb2a1848f4d5",
+          "name": "get_deployments",
+          "input": {
+            "service": "orders-api"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "ollama-47f10d67cdd2406eb4d820076edd6ddb",
+          "content": "[{\"id\": \"log-pool\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached.\"}]"
+        },
+        {
+          "type": "tool_result",
+          "tool_use_id": "ollama-5467fba58b004d08b21ae21629aab41d",
+          "content": "[{\"id\": \"metric-pool\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"db_connections_busy=20; db_connections_max=20; queue_depth=140\"}]"
+        },
+        {
+          "type": "tool_result",
+          "tool_use_id": "ollama-fbe41bfd1b6c470b9795eb2a1848f4d5",
+          "content": "[]"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "ollama-530948cb341f4cbe96bb913d0afdd380",
+          "name": "search_runbooks",
+          "input": {
+            "query": "connection pool exhausted",
+            "service": "orders-api"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "ollama-530948cb341f4cbe96bb913d0afdd380",
+          "content": "[{\"id\": \"upstream@1\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.\", \"retrieval_score\": 1.197441}]"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "ollama-11f712d789784816a2c8ac3d9b2f1696",
+          "name": "submit_investigation",
+          "input": {
+            "evidence_ids": [
+              "log-pool",
+              "metric-pool"
+            ],
+            "explanation": "The logs indicate a connection pool exhaustion with all 20 connections busy, and the metrics show a queue depth of 140. This suggests the service is unable to handle the incoming requests due to resource exhaustion.",
+            "next_step": "Verify if the database or upstream services are experiencing high load or outages. Check if increasing the connection pool size or scaling resources can resolve the issue.",
+            "runbook_ids": [
+              "upstream@1"
+            ],
+            "status": "hypothesis",
+            "suspected_cause": "resource_exhaustion"
+          }
+        }
+      ]
+    }
+  ],
+  "tool_errors": [],
+  "stop_reason": "submitted",
+  "measurement": {
+    "duration_ms": 46383.088,
+    "llm_calls": 3,
+    "model_turns": 3,
+    "usage_complete": true,
+    "input_tokens": 2931,
+    "output_tokens": 238,
+    "cache_tokens": 0,
+    "estimated_llm_cost_usd": null,
+    "input_usd_per_million": null,
+    "output_usd_per_million": null
+  },
+  "limits": {
+    "max_model_calls": 6,
+    "max_tool_calls": 8
+  },
+  "limitations": [
+    "Citation checks establish provenance, not semantic correctness.",
+    "Synthetic fixtures are not a held-out or production benchmark.",
+    "No remediation is executed."
+  ]
+}

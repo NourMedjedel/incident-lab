@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "incident-lab"
+version = "0.1.0"
+description = "Reproducible incident investigation fixtures, evidence tools, and a diagnostic baseline."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+authors = [{name = "Nour Medjedel"}]
+keywords = ["agents", "langgraph", "incident-investigation", "evaluation", "ollama"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.14,<1"]
+agent = ["langgraph>=1,<2", "anthropic>=0.80,<1", "httpx>=0.27,<1"]
+
+[project.scripts]
+incident-lab = "incident_lab.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["incident_lab*"]
+
+[tool.setuptools.package-data]
+incident_lab = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

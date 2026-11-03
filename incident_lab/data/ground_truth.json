@@ -1,0 +1,79 @@
+{
+  "fixture_version": "1",
+  "label_semantics": "cause is the expected diagnostic answer from the visible evidence; null means abstention is required, not that no root cause exists.",
+  "labels": {
+    "INC-001": {
+      "cause": "invalid_configuration",
+      "required_evidence": [
+        "log-config",
+        "deploy-config"
+      ],
+      "relevant_runbooks": [
+        "configuration@2"
+      ],
+      "slice": "supported-signature"
+    },
+    "INC-002": {
+      "cause": "dependency_timeout",
+      "required_evidence": [
+        "log-upstream"
+      ],
+      "relevant_runbooks": [
+        "upstream@1"
+      ],
+      "slice": "supported-signature"
+    },
+    "INC-003": {
+      "cause": "application_regression",
+      "required_evidence": [
+        "log-app",
+        "deploy-app"
+      ],
+      "relevant_runbooks": [
+        "release@1"
+      ],
+      "slice": "supported-signature"
+    },
+    "INC-004": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [
+        "investigation@1"
+      ],
+      "slice": "insufficient-evidence"
+    },
+    "INC-005": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [
+        "investigation@1"
+      ],
+      "slice": "temporal-boundary"
+    },
+    "INC-006": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [
+        "investigation@1"
+      ],
+      "slice": "tool-outage"
+    },
+    "INC-007": {
+      "cause": "resource_exhaustion",
+      "required_evidence": [
+        "log-pool",
+        "metric-pool"
+      ],
+      "relevant_runbooks": [],
+      "slice": "unsupported-signature"
+    },
+    "INC-008": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [
+        "investigation@1"
+      ],
+      "slice": "conflicting-evidence"
+    }
+  }
+}

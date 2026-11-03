@@ -1,0 +1,2543 @@
+{
+  "scope": "One local inference run per synthetic development case; not held-out or production evidence.",
+  "provider": "ollama",
+  "model": "qwen3:8b",
+  "baseline": {
+    "engine": "rules-v1",
+    "fixture_version": "1",
+    "generated_at": "2026-11-03T18:36:00.191357+00:00",
+    "python_version": "3.14.0",
+    "scope": "Small synthetic development suite; not a held-out or production benchmark.",
+    "summary": {
+      "case_count": 8,
+      "behavior_correct_count": 7,
+      "answered_count": 3,
+      "answer_coverage": 0.375,
+      "diagnostic_recall": 0.75,
+      "accuracy_when_answered": 1.0,
+      "appropriate_abstention_rate": 1.0,
+      "required_evidence_evaluated_count": 3,
+      "required_evidence_coverage_when_answered": 1.0,
+      "mean_runbook_recall_at_2": 1.0,
+      "llm_calls": 0,
+      "failed_count": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "estimated_llm_cost_usd": 0
+    },
+    "cases": [
+      {
+        "incident_id": "INC-001",
+        "slice": "supported-signature",
+        "expected_cause": "invalid_configuration",
+        "predicted_cause": "invalid_configuration",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.15,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-002",
+        "slice": "supported-signature",
+        "expected_cause": "dependency_timeout",
+        "predicted_cause": "dependency_timeout",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.059,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-003",
+        "slice": "supported-signature",
+        "expected_cause": "application_regression",
+        "predicted_cause": "application_regression",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.049,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-004",
+        "slice": "insufficient-evidence",
+        "expected_cause": null,
+        "predicted_cause": null,
+        "status": "abstained",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.041,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-005",
+        "slice": "temporal-boundary",
+        "expected_cause": null,
+        "predicted_cause": null,
+        "status": "abstained",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.038,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-006",
+        "slice": "tool-outage",
+        "expected_cause": null,
+        "predicted_cause": null,
+        "status": "abstained",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.044,
+        "tool_errors": [
+          "Replay fault: get_deployments is unavailable"
+        ]
+      },
+      {
+        "incident_id": "INC-007",
+        "slice": "unsupported-signature",
+        "expected_cause": "resource_exhaustion",
+        "predicted_cause": null,
+        "status": "abstained",
+        "correct": false,
+        "stop_reason": null,
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": null,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.041,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-008",
+        "slice": "conflicting-evidence",
+        "expected_cause": null,
+        "predicted_cause": null,
+        "status": "abstained",
+        "correct": true,
+        "stop_reason": null,
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": 0,
+        "duration_ms": 0.048,
+        "tool_errors": []
+      }
+    ]
+  },
+  "agent": {
+    "engine": "langgraph-agent-v1",
+    "fixture_version": "1",
+    "generated_at": "2026-11-03T18:36:00.191822+00:00",
+    "python_version": "3.14.0",
+    "scope": "Small synthetic development suite; not a held-out or production benchmark.",
+    "summary": {
+      "case_count": 8,
+      "behavior_correct_count": 5,
+      "answered_count": 6,
+      "answer_coverage": 0.75,
+      "diagnostic_recall": 1.0,
+      "accuracy_when_answered": 0.6666666666666666,
+      "appropriate_abstention_rate": 0.25,
+      "required_evidence_evaluated_count": 4,
+      "required_evidence_coverage_when_answered": 1.0,
+      "mean_runbook_recall_at_2": 0.14285714285714285,
+      "llm_calls": 24,
+      "failed_count": 1,
+      "input_tokens": 23684,
+      "output_tokens": 1873,
+      "usage_complete": true,
+      "estimated_llm_cost_usd": null
+    },
+    "cases": [
+      {
+        "incident_id": "INC-001",
+        "slice": "supported-signature",
+        "expected_cause": "invalid_configuration",
+        "predicted_cause": "invalid_configuration",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": "submitted",
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": 0.0,
+        "llm_calls": 2,
+        "input_tokens": 1843,
+        "output_tokens": 196,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 25951.322,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-002",
+        "slice": "supported-signature",
+        "expected_cause": "dependency_timeout",
+        "predicted_cause": "dependency_timeout",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": "submitted",
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": 1.0,
+        "llm_calls": 3,
+        "input_tokens": 3046,
+        "output_tokens": 206,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 16947.018,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-003",
+        "slice": "supported-signature",
+        "expected_cause": "application_regression",
+        "predicted_cause": "application_regression",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": "submitted",
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": 0.0,
+        "llm_calls": 3,
+        "input_tokens": 2937,
+        "output_tokens": 223,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 17204.996,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-004",
+        "slice": "insufficient-evidence",
+        "expected_cause": null,
+        "predicted_cause": "invalid_configuration",
+        "status": "hypothesis",
+        "correct": false,
+        "stop_reason": "submitted",
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 0.0,
+        "llm_calls": 3,
+        "input_tokens": 2806,
+        "output_tokens": 225,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 17027.088,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-005",
+        "slice": "temporal-boundary",
+        "expected_cause": null,
+        "predicted_cause": null,
+        "status": "abstained",
+        "correct": true,
+        "stop_reason": "submitted",
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 0.0,
+        "llm_calls": 3,
+        "input_tokens": 2673,
+        "output_tokens": 184,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 13724.942,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-006",
+        "slice": "tool-outage",
+        "expected_cause": null,
+        "predicted_cause": null,
+        "status": "failed",
+        "correct": false,
+        "stop_reason": "invalid_tool_protocol",
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 0.0,
+        "llm_calls": 4,
+        "input_tokens": 4213,
+        "output_tokens": 331,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 26214.305,
+        "tool_errors": [
+          "Replay fault: get_deployments is unavailable"
+        ]
+      },
+      {
+        "incident_id": "INC-007",
+        "slice": "unsupported-signature",
+        "expected_cause": "resource_exhaustion",
+        "predicted_cause": "resource_exhaustion",
+        "status": "hypothesis",
+        "correct": true,
+        "stop_reason": "submitted",
+        "required_evidence_cited": true,
+        "runbook_recall_at_2": null,
+        "llm_calls": 3,
+        "input_tokens": 2931,
+        "output_tokens": 238,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 19040.831,
+        "tool_errors": []
+      },
+      {
+        "incident_id": "INC-008",
+        "slice": "conflicting-evidence",
+        "expected_cause": null,
+        "predicted_cause": "application_regression",
+        "status": "hypothesis",
+        "correct": false,
+        "stop_reason": "submitted",
+        "required_evidence_cited": null,
+        "runbook_recall_at_2": 0.0,
+        "llm_calls": 3,
+        "input_tokens": 3235,
+        "output_tokens": 270,
+        "usage_complete": true,
+        "estimated_llm_cost_usd": null,
+        "duration_ms": 22976.171,
+        "tool_errors": []
+      }
+    ]
+  },
+  "agent_traces": {
+    "INC-001": {
+      "incident_id": "INC-001",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "hypothesis",
+      "suspected_cause": "invalid_configuration",
+      "explanation": "The logs indicate a CONFIG_VALIDATION_FAILED error due to an unsupported scheme in the DATABASE_URL. This error likely originated from a recent configuration deployment (cfg-42) that changed the DATABASE_URL. The high error ratio in metrics further supports this hypothesis.",
+      "next_step": "Verify the DATABASE_URL configuration and its scheme in the latest deployment.",
+      "evidence_ids": [
+        "log-config",
+        "metric-errors",
+        "deploy-config"
+      ],
+      "evidence": [
+        {
+          "id": "log-config",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.98; requests_per_minute=120"
+        },
+        {
+          "id": "deploy-config",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Configuration deployment cfg-42 changed DATABASE_URL."
+        }
+      ],
+      "runbooks": [],
+      "cited_runbook_ids": [],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-config",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:01:00Z",
+            "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-errors",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "http_error_ratio=0.98; requests_per_minute=120"
+          }
+        ],
+        "deployments": [
+          {
+            "id": "deploy-config",
+            "kind": "deployment",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:00:00Z",
+            "text": "Configuration deployment cfg-42 changed DATABASE_URL."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-config"
+          ],
+          "duration_ms": 0.072
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-errors"
+          ],
+          "duration_ms": 0.01
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "deploy-config"
+          ],
+          "duration_ms": 0.004
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 14877.683,
+          "status": "ok",
+          "input_tokens": 785,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 11051.035,
+          "status": "ok",
+          "input_tokens": 1058,
+          "output_tokens": 132,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Elevated errors after a service change\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-739fe13af1f54786abe27300aa793c13",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-f790e149ed6b484b8e40f31f5766737c",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-0dc508f6513e488299fb844888a547ad",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-739fe13af1f54786abe27300aa793c13",
+              "content": "[{\"id\": \"log-config\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-f790e149ed6b484b8e40f31f5766737c",
+              "content": "[{\"id\": \"metric-errors\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"http_error_ratio=0.98; requests_per_minute=120\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-0dc508f6513e488299fb844888a547ad",
+              "content": "[{\"id\": \"deploy-config\", \"kind\": \"deployment\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:00:00Z\", \"text\": \"Configuration deployment cfg-42 changed DATABASE_URL.\"}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-381c7e9ef9494971b5f12a39ee3d4119",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-config",
+                  "metric-errors",
+                  "deploy-config"
+                ],
+                "explanation": "The logs indicate a CONFIG_VALIDATION_FAILED error due to an unsupported scheme in the DATABASE_URL. This error likely originated from a recent configuration deployment (cfg-42) that changed the DATABASE_URL. The high error ratio in metrics further supports this hypothesis.",
+                "next_step": "Verify the DATABASE_URL configuration and its scheme in the latest deployment.",
+                "runbook_ids": [],
+                "status": "hypothesis",
+                "suspected_cause": "invalid_configuration"
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 25951.322,
+        "llm_calls": 2,
+        "model_turns": 2,
+        "usage_complete": true,
+        "input_tokens": 1843,
+        "output_tokens": 196,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-002": {
+      "incident_id": "INC-002",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "hypothesis",
+      "suspected_cause": "dependency_timeout",
+      "explanation": "The logs indicate an upstream timeout with the inventory-api, and metrics show high latency and error rates. This suggests a dependency timeout issue.",
+      "next_step": "Verify the health and connection timings of the inventory-api.",
+      "evidence_ids": [
+        "log-upstream",
+        "metric-latency"
+      ],
+      "evidence": [
+        {
+          "id": "log-upstream",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:02:00Z",
+          "text": "ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms."
+        },
+        {
+          "id": "metric-latency",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "request_p95_ms=2300; http_error_ratio=0.35"
+        }
+      ],
+      "runbooks": [
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.",
+          "retrieval_score": 2.846719
+        }
+      ],
+      "cited_runbook_ids": [
+        "upstream@1"
+      ],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-upstream",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:02:00Z",
+            "text": "ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-latency",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "request_p95_ms=2300; http_error_ratio=0.35"
+          }
+        ],
+        "deployments": [
+          {
+            "id": "deploy-stable",
+            "kind": "deployment",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T09:00:00Z",
+            "text": "Application deployment release-20 completed."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-upstream"
+          ],
+          "duration_ms": 0.055
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-latency"
+          ],
+          "duration_ms": 0.012
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "deploy-stable"
+          ],
+          "duration_ms": 0.02
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "limit": 1,
+            "query": "upstream timeout",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "upstream@1"
+          ],
+          "duration_ms": 0.688
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4743.603,
+          "status": "ok",
+          "input_tokens": 783,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 3874.75,
+          "status": "ok",
+          "input_tokens": 1063,
+          "output_tokens": 33,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 8308.088,
+          "status": "ok",
+          "input_tokens": 1200,
+          "output_tokens": 109,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Slow requests and failed checkouts\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-bc918668f39b4bc39fea2ed45c4b0fe8",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-59a3e0a7bd0040459ec534d2f042fcc4",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-e4a6700d7f274801b945471d5f977093",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-bc918668f39b4bc39fea2ed45c4b0fe8",
+              "content": "[{\"id\": \"log-upstream\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:02:00Z\", \"text\": \"ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-59a3e0a7bd0040459ec534d2f042fcc4",
+              "content": "[{\"id\": \"metric-latency\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"request_p95_ms=2300; http_error_ratio=0.35\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-e4a6700d7f274801b945471d5f977093",
+              "content": "[{\"id\": \"deploy-stable\", \"kind\": \"deployment\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"Application deployment release-20 completed.\"}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-22f2615cdb52484895d3361a7f0b9729",
+              "name": "search_runbooks",
+              "input": {
+                "limit": 1,
+                "query": "upstream timeout",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-22f2615cdb52484895d3361a7f0b9729",
+              "content": "[{\"id\": \"upstream@1\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.\", \"retrieval_score\": 2.846719}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-c6c4f56e265146d091c6ce3b8f597c39",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-upstream",
+                  "metric-latency"
+                ],
+                "explanation": "The logs indicate an upstream timeout with the inventory-api, and metrics show high latency and error rates. This suggests a dependency timeout issue.",
+                "next_step": "Verify the health and connection timings of the inventory-api.",
+                "runbook_ids": [
+                  "upstream@1"
+                ],
+                "status": "hypothesis",
+                "suspected_cause": "dependency_timeout"
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 16947.018,
+        "llm_calls": 3,
+        "model_turns": 3,
+        "usage_complete": true,
+        "input_tokens": 3046,
+        "output_tokens": 206,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-003": {
+      "incident_id": "INC-003",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "hypothesis",
+      "suspected_cause": "application_regression",
+      "explanation": "The deployment release-21 introduced a change to the order serializer, which resulted in a KeyError during serialization. This aligns with the observed error logs and increased error ratio in metrics.",
+      "next_step": "Review the code changes in release-21 related to the order serializer and validate the data being serialized.",
+      "evidence_ids": [
+        "log-app",
+        "metric-errors",
+        "deploy-app"
+      ],
+      "evidence": [
+        {
+          "id": "log-app",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR UNHANDLED_EXCEPTION: KeyError while serializing an order."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.63; requests_per_minute=115"
+        },
+        {
+          "id": "deploy-app",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Application deployment release-21 changed the order serializer."
+        }
+      ],
+      "runbooks": [],
+      "cited_runbook_ids": [],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-app",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:01:00Z",
+            "text": "ERROR UNHANDLED_EXCEPTION: KeyError while serializing an order."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-errors",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "http_error_ratio=0.63; requests_per_minute=115"
+          }
+        ],
+        "deployments": [
+          {
+            "id": "deploy-app",
+            "kind": "deployment",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:00:00Z",
+            "text": "Application deployment release-21 changed the order serializer."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-app"
+          ],
+          "duration_ms": 0.069
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-errors"
+          ],
+          "duration_ms": 0.018
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "deploy-app"
+          ],
+          "duration_ms": 0.015
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "limit": 1,
+            "query": "order serializer error",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.259
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4476.652,
+          "status": "ok",
+          "input_tokens": 781,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 3846.65,
+          "status": "ok",
+          "input_tokens": 1056,
+          "output_tokens": 33,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 8862.454,
+          "status": "ok",
+          "input_tokens": 1100,
+          "output_tokens": 126,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Service errors after release\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-90b327dcc81343e7b0f206ed8d5382bb",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-17117a0d494244b7a47d0d2f1baa2660",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-5c1b77e6edf841b499a461e3a974e1a4",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-90b327dcc81343e7b0f206ed8d5382bb",
+              "content": "[{\"id\": \"log-app\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR UNHANDLED_EXCEPTION: KeyError while serializing an order.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-17117a0d494244b7a47d0d2f1baa2660",
+              "content": "[{\"id\": \"metric-errors\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"http_error_ratio=0.63; requests_per_minute=115\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-5c1b77e6edf841b499a461e3a974e1a4",
+              "content": "[{\"id\": \"deploy-app\", \"kind\": \"deployment\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:00:00Z\", \"text\": \"Application deployment release-21 changed the order serializer.\"}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-808d954a5dd24f8981b7dcd687a806ec",
+              "name": "search_runbooks",
+              "input": {
+                "limit": 1,
+                "query": "order serializer error",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-808d954a5dd24f8981b7dcd687a806ec",
+              "content": "[]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-e732e192d7904c6288edc89931cdc95e",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-app",
+                  "metric-errors",
+                  "deploy-app"
+                ],
+                "explanation": "The deployment release-21 introduced a change to the order serializer, which resulted in a KeyError during serialization. This aligns with the observed error logs and increased error ratio in metrics.",
+                "next_step": "Review the code changes in release-21 related to the order serializer and validate the data being serialized.",
+                "runbook_ids": [],
+                "status": "hypothesis",
+                "suspected_cause": "application_regression"
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 17204.996,
+        "llm_calls": 3,
+        "model_turns": 3,
+        "usage_complete": true,
+        "input_tokens": 2937,
+        "output_tokens": 223,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-004": {
+      "incident_id": "INC-004",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "hypothesis",
+      "suspected_cause": "invalid_configuration",
+      "explanation": "The orders-api service experienced an unexplained increase in failed requests, indicated by a 500 error ratio of 0.20. No recent deployments were found, and runbooks did not provide additional context.",
+      "next_step": "Review the logs and metrics for further insights, and check for any recent configuration changes or dependency issues.",
+      "evidence_ids": [
+        "log-generic",
+        "metric-errors"
+      ],
+      "evidence": [
+        {
+          "id": "log-generic",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR request completed with status 500; trace unavailable."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.20"
+        }
+      ],
+      "runbooks": [],
+      "cited_runbook_ids": [],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-generic",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:01:00Z",
+            "text": "ERROR request completed with status 500; trace unavailable."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-errors",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "http_error_ratio=0.20"
+          }
+        ],
+        "deployments": []
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-generic"
+          ],
+          "duration_ms": 0.062
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-errors"
+          ],
+          "duration_ms": 0.013
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.005
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "limit": 1,
+            "query": "500 error",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.23
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4512.166,
+          "status": "ok",
+          "input_tokens": 783,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 3554.876,
+          "status": "ok",
+          "input_tokens": 989,
+          "output_tokens": 34,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 8939.483,
+          "status": "ok",
+          "input_tokens": 1034,
+          "output_tokens": 127,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Unexplained increase in failed requests\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-79b8318c6d44482a8ab9760a7c32cba6",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-c0f199b3edaa4c8db707eec377b0485a",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-393574188e104f5aaae8c84b62be04b9",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-79b8318c6d44482a8ab9760a7c32cba6",
+              "content": "[{\"id\": \"log-generic\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR request completed with status 500; trace unavailable.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-c0f199b3edaa4c8db707eec377b0485a",
+              "content": "[{\"id\": \"metric-errors\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"http_error_ratio=0.20\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-393574188e104f5aaae8c84b62be04b9",
+              "content": "[]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-5902e12122f34114a3f63970c82e4a22",
+              "name": "search_runbooks",
+              "input": {
+                "limit": 1,
+                "query": "500 error",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-5902e12122f34114a3f63970c82e4a22",
+              "content": "[]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-726255a0e4464252a262ed0b49a2bad9",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-generic",
+                  "metric-errors"
+                ],
+                "explanation": "The orders-api service experienced an unexplained increase in failed requests, indicated by a 500 error ratio of 0.20. No recent deployments were found, and runbooks did not provide additional context.",
+                "next_step": "Review the logs and metrics for further insights, and check for any recent configuration changes or dependency issues.",
+                "runbook_ids": [],
+                "status": "hypothesis",
+                "suspected_cause": "invalid_configuration"
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 17027.088,
+        "llm_calls": 3,
+        "model_turns": 3,
+        "usage_complete": true,
+        "input_tokens": 2806,
+        "output_tokens": 225,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-005": {
+      "incident_id": "INC-005",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "abstained",
+      "suspected_cause": null,
+      "explanation": "No relevant evidence was found to determine the cause of the incident. The service 'orders-api' has no logs, metrics, or deployment history available for analysis.",
+      "next_step": "Review the incident with additional data or tools.",
+      "evidence_ids": [],
+      "evidence": [],
+      "runbooks": [],
+      "cited_runbook_ids": [],
+      "observations": {
+        "logs": [],
+        "metrics": [
+          {
+            "id": "metric-errors",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "http_error_ratio=0.45"
+          }
+        ],
+        "deployments": []
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.058
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-errors"
+          ],
+          "duration_ms": 0.035
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.009
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "limit": 5,
+            "query": "http error ratio",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.172
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4526.594,
+          "status": "ok",
+          "input_tokens": 781,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 3110.389,
+          "status": "ok",
+          "input_tokens": 924,
+          "output_tokens": 33,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 6063.889,
+          "status": "ok",
+          "input_tokens": 968,
+          "output_tokens": 87,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Alert with incomplete observations\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-ec79f8ff76484b429ec1a14870fb9707",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-6e423c07ec2542ba947722cdcf10c03c",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-e51b9612cc0245e7b107d4745a6986bd",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-ec79f8ff76484b429ec1a14870fb9707",
+              "content": "[]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-6e423c07ec2542ba947722cdcf10c03c",
+              "content": "[{\"id\": \"metric-errors\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"http_error_ratio=0.45\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-e51b9612cc0245e7b107d4745a6986bd",
+              "content": "[]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-08d36473b966491c99ff630a97e5a8ca",
+              "name": "search_runbooks",
+              "input": {
+                "limit": 5,
+                "query": "http error ratio",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-08d36473b966491c99ff630a97e5a8ca",
+              "content": "[]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-33006a40652b475986bc87409e76dfe7",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [],
+                "explanation": "No relevant evidence was found to determine the cause of the incident. The service 'orders-api' has no logs, metrics, or deployment history available for analysis.",
+                "next_step": "Review the incident with additional data or tools.",
+                "runbook_ids": [],
+                "status": "abstained",
+                "suspected_cause": null
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 13724.942,
+        "llm_calls": 3,
+        "model_turns": 3,
+        "usage_complete": true,
+        "input_tokens": 2673,
+        "output_tokens": 184,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-006": {
+      "incident_id": "INC-006",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "failed",
+      "suspected_cause": null,
+      "explanation": "Investigation did not produce a validated submission.",
+      "next_step": "Inspect the trace and resolve the reported execution failure.",
+      "evidence_ids": [],
+      "evidence": [],
+      "runbooks": [
+        {
+          "id": "configuration@2",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review.",
+          "retrieval_score": 1.251768
+        }
+      ],
+      "cited_runbook_ids": [],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-config",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:01:00Z",
+            "text": "ERROR CONFIG_VALIDATION_FAILED: required setting is missing."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-errors",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "http_error_ratio=0.99"
+          }
+        ],
+        "deployments": []
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-config"
+          ],
+          "duration_ms": 0.046
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-errors"
+          ],
+          "duration_ms": 0.018
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "error",
+          "evidence_ids": [],
+          "error": "Replay fault: get_deployments is unavailable",
+          "duration_ms": 0.011
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "limit": 1,
+            "query": "CONFIG_VALIDATION_FAILED",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "configuration@2"
+          ],
+          "duration_ms": 0.296
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4512.587,
+          "status": "ok",
+          "input_tokens": 782,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 3836.567,
+          "status": "ok",
+          "input_tokens": 1004,
+          "output_tokens": 34,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 9673.512,
+          "status": "ok",
+          "input_tokens": 1141,
+          "output_tokens": 128,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 4,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 8167.816,
+          "status": "invalid_tool_protocol",
+          "input_tokens": 1286,
+          "output_tokens": 105,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [
+        "Replay fault: get_deployments is unavailable",
+        "Required telemetry unavailable; submit an abstention"
+      ],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Alert while telemetry is degraded\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-936fb978da7248cc9ef3679a8b8dc00d",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-a02aeb1d3aa24fe78b1cc2aa90592bfc",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-032941a06c644fbfb7449f9856bd2f17",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-936fb978da7248cc9ef3679a8b8dc00d",
+              "content": "[{\"id\": \"log-config\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR CONFIG_VALIDATION_FAILED: required setting is missing.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-a02aeb1d3aa24fe78b1cc2aa90592bfc",
+              "content": "[{\"id\": \"metric-errors\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"http_error_ratio=0.99\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-032941a06c644fbfb7449f9856bd2f17",
+              "is_error": true,
+              "content": "Replay fault: get_deployments is unavailable"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-d01aa5392ba343e3b6239b704c342c1b",
+              "name": "search_runbooks",
+              "input": {
+                "limit": 1,
+                "query": "CONFIG_VALIDATION_FAILED",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-d01aa5392ba343e3b6239b704c342c1b",
+              "content": "[{\"id\": \"configuration@2\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"CONFIG_VALIDATION_FAILED invalid configuration: compare the configuration diff and validate DATABASE_URL. Propose a revert only after operator review.\", \"retrieval_score\": 1.251768}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-093e0ee120a34e2bbb7c0a50b856a70d",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-config",
+                  "metric-errors"
+                ],
+                "explanation": "The logs indicate a CONFIG_VALIDATION_FAILED error, suggesting an invalid configuration. The high error ratio in metrics supports this. The runbook confirms that this error is related to invalid configuration, specifically mentioning DATABASE_URL validation.",
+                "next_step": "Review the configuration diff and validate DATABASE_URL. Propose a revert after operator review.",
+                "runbook_ids": [
+                  "configuration@2"
+                ],
+                "status": "hypothesis",
+                "suspected_cause": "invalid_configuration"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-093e0ee120a34e2bbb7c0a50b856a70d",
+              "is_error": true,
+              "content": "Required telemetry unavailable; submit an abstention"
+            }
+          ]
+        }
+      ],
+      "tool_errors": [
+        "Replay fault: get_deployments is unavailable"
+      ],
+      "stop_reason": "invalid_tool_protocol",
+      "measurement": {
+        "duration_ms": 26214.305,
+        "llm_calls": 4,
+        "model_turns": 4,
+        "usage_complete": true,
+        "input_tokens": 4213,
+        "output_tokens": 331,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-007": {
+      "incident_id": "INC-007",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "hypothesis",
+      "suspected_cause": "resource_exhaustion",
+      "explanation": "The logs indicate a connection pool exhaustion with all 20 connections busy, and the metrics show a queue depth of 140. This suggests the service is unable to handle the incoming requests due to resource exhaustion.",
+      "next_step": "Verify if the database or upstream services are experiencing high load or outages. Check if increasing the connection pool size or scaling resources can resolve the issue.",
+      "evidence_ids": [
+        "log-pool",
+        "metric-pool"
+      ],
+      "evidence": [
+        {
+          "id": "log-pool",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached."
+        },
+        {
+          "id": "metric-pool",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "db_connections_busy=20; db_connections_max=20; queue_depth=140"
+        }
+      ],
+      "runbooks": [
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.",
+          "retrieval_score": 1.197441
+        }
+      ],
+      "cited_runbook_ids": [
+        "upstream@1"
+      ],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-pool",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:01:00Z",
+            "text": "ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-pool",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "db_connections_busy=20; db_connections_max=20; queue_depth=140"
+          }
+        ],
+        "deployments": []
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-pool"
+          ],
+          "duration_ms": 0.101
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-pool"
+          ],
+          "duration_ms": 0.02
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [],
+          "duration_ms": 0.009
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "query": "connection pool exhausted",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "upstream@1"
+          ],
+          "duration_ms": 0.298
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4530.285,
+          "status": "ok",
+          "input_tokens": 782,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 3560.243,
+          "status": "ok",
+          "input_tokens": 1008,
+          "output_tokens": 28,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 10927.582,
+          "status": "ok",
+          "input_tokens": 1141,
+          "output_tokens": 146,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Requests are queued under load\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-4f23ca5d4b60404f96f12f53b6b49dbf",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-4e55d0fbd06b49a18cc57b01ec710817",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-a3f41bbfdf164b6a80ea185a7e5a786e",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-4f23ca5d4b60404f96f12f53b6b49dbf",
+              "content": "[{\"id\": \"log-pool\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR CONNECTION_POOL_EXHAUSTED: all 20 connections busy; queue limit reached.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-4e55d0fbd06b49a18cc57b01ec710817",
+              "content": "[{\"id\": \"metric-pool\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"db_connections_busy=20; db_connections_max=20; queue_depth=140\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-a3f41bbfdf164b6a80ea185a7e5a786e",
+              "content": "[]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-908d949a7857450498785c157c348e89",
+              "name": "search_runbooks",
+              "input": {
+                "query": "connection pool exhausted",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-908d949a7857450498785c157c348e89",
+              "content": "[{\"id\": \"upstream@1\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.\", \"retrieval_score\": 1.197441}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-a3934b05ccac4e888dbc4ad93d6aa3ea",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-pool",
+                  "metric-pool"
+                ],
+                "explanation": "The logs indicate a connection pool exhaustion with all 20 connections busy, and the metrics show a queue depth of 140. This suggests the service is unable to handle the incoming requests due to resource exhaustion.",
+                "next_step": "Verify if the database or upstream services are experiencing high load or outages. Check if increasing the connection pool size or scaling resources can resolve the issue.",
+                "runbook_ids": [
+                  "upstream@1"
+                ],
+                "status": "hypothesis",
+                "suspected_cause": "resource_exhaustion"
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 19040.831,
+        "llm_calls": 3,
+        "model_turns": 3,
+        "usage_complete": true,
+        "input_tokens": 2931,
+        "output_tokens": 238,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    },
+    "INC-008": {
+      "incident_id": "INC-008",
+      "service": "orders-api",
+      "as_of": "2026-01-15T10:05:00Z",
+      "engine": "langgraph-agent-v1",
+      "mode": "synthetic-fixture-replay",
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "prompt_version": "investigator-v1",
+      "status": "hypothesis",
+      "suspected_cause": "application_regression",
+      "explanation": "The logs indicate an unhandled exception during order serialization and an upstream timeout to the inventory-api. The metrics show a high error ratio. The recent deployment might be related to the unhandled exception, while the upstream timeout suggests a dependency issue. Both issues are covered in the runbooks.",
+      "next_step": "Review the recent deployment changes and upstream service health. Consider rolling back the deployment if the unhandled exception is suspected to be caused by the new release.",
+      "evidence_ids": [
+        "log-app",
+        "log-upstream",
+        "metric-errors",
+        "deploy-app"
+      ],
+      "evidence": [
+        {
+          "id": "log-app",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:01:00Z",
+          "text": "ERROR UNHANDLED_EXCEPTION while serializing an order."
+        },
+        {
+          "id": "log-upstream",
+          "kind": "log",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:02:00Z",
+          "text": "ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms."
+        },
+        {
+          "id": "metric-errors",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:04:00Z",
+          "text": "http_error_ratio=0.67"
+        },
+        {
+          "id": "deploy-app",
+          "kind": "deployment",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T10:00:00Z",
+          "text": "Application deployment release-23 completed."
+        }
+      ],
+      "runbooks": [
+        {
+          "id": "release@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback.",
+          "retrieval_score": 1.197441
+        },
+        {
+          "id": "upstream@1",
+          "kind": "runbook",
+          "service": "orders-api",
+          "timestamp": "2026-01-15T09:00:00Z",
+          "text": "UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.",
+          "retrieval_score": 1.197441
+        }
+      ],
+      "cited_runbook_ids": [
+        "release@1",
+        "upstream@1"
+      ],
+      "observations": {
+        "logs": [
+          {
+            "id": "log-app",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:01:00Z",
+            "text": "ERROR UNHANDLED_EXCEPTION while serializing an order."
+          },
+          {
+            "id": "log-upstream",
+            "kind": "log",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:02:00Z",
+            "text": "ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms."
+          }
+        ],
+        "metrics": [
+          {
+            "id": "metric-errors",
+            "kind": "metric",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:04:00Z",
+            "text": "http_error_ratio=0.67"
+          }
+        ],
+        "deployments": [
+          {
+            "id": "deploy-app",
+            "kind": "deployment",
+            "service": "orders-api",
+            "timestamp": "2026-01-15T10:00:00Z",
+            "text": "Application deployment release-23 completed."
+          }
+        ]
+      },
+      "trace": [
+        {
+          "sequence": 1,
+          "tool": "get_logs",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "log-app",
+            "log-upstream"
+          ],
+          "duration_ms": 0.055
+        },
+        {
+          "sequence": 2,
+          "tool": "get_metrics",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "metric-errors"
+          ],
+          "duration_ms": 0.01
+        },
+        {
+          "sequence": 3,
+          "tool": "get_deployments",
+          "arguments": {
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "deploy-app"
+          ],
+          "duration_ms": 0.009
+        },
+        {
+          "sequence": 4,
+          "tool": "search_runbooks",
+          "arguments": {
+            "limit": 2,
+            "query": "UNHANDLED_EXCEPTION UPSTREAM_TIMEOUT",
+            "service": "orders-api"
+          },
+          "status": "ok",
+          "evidence_ids": [
+            "release@1",
+            "upstream@1"
+          ],
+          "duration_ms": 0.331
+        }
+      ],
+      "model_trace": [
+        {
+          "turn": 1,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4586.474,
+          "status": "ok",
+          "input_tokens": 782,
+          "output_tokens": 64,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 2,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 4931.576,
+          "status": "ok",
+          "input_tokens": 1110,
+          "output_tokens": 37,
+          "cache_tokens": 0
+        },
+        {
+          "turn": 3,
+          "provider": "ollama",
+          "model": "qwen3:8b",
+          "duration_ms": 13438.873,
+          "status": "ok",
+          "input_tokens": 1343,
+          "output_tokens": 169,
+          "cache_tokens": 0
+        }
+      ],
+      "validation_errors": [],
+      "conversation": [
+        {
+          "role": "user",
+          "content": "{\"service\": \"orders-api\", \"title\": \"Several failure signals are present\", \"evidence_cutoff\": \"2026-01-15T10:05:00Z\"}"
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-b3a5e7d8993b45928c157d2d27e1f8f5",
+              "name": "get_logs",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-69b0e3dda7c74f389aa0612571cf0047",
+              "name": "get_metrics",
+              "input": {
+                "service": "orders-api"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "ollama-53c0fdb616f140828459a26fdff00760",
+              "name": "get_deployments",
+              "input": {
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-b3a5e7d8993b45928c157d2d27e1f8f5",
+              "content": "[{\"id\": \"log-app\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:01:00Z\", \"text\": \"ERROR UNHANDLED_EXCEPTION while serializing an order.\"}, {\"id\": \"log-upstream\", \"kind\": \"log\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:02:00Z\", \"text\": \"ERROR UPSTREAM_TIMEOUT: inventory-api exceeded 2000ms.\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-69b0e3dda7c74f389aa0612571cf0047",
+              "content": "[{\"id\": \"metric-errors\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:04:00Z\", \"text\": \"http_error_ratio=0.67\"}]"
+            },
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-53c0fdb616f140828459a26fdff00760",
+              "content": "[{\"id\": \"deploy-app\", \"kind\": \"deployment\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T10:00:00Z\", \"text\": \"Application deployment release-23 completed.\"}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-c0ea3c62c32948b89febcc47dc55df01",
+              "name": "search_runbooks",
+              "input": {
+                "limit": 2,
+                "query": "UNHANDLED_EXCEPTION UPSTREAM_TIMEOUT",
+                "service": "orders-api"
+              }
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "ollama-c0ea3c62c32948b89febcc47dc55df01",
+              "content": "[{\"id\": \"release@1\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"UNHANDLED_EXCEPTION application regression: inspect the recent application release diff. Collect a stack trace and propose an operator-reviewed rollback.\", \"retrieval_score\": 1.197441}, {\"id\": \"upstream@1\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-01-15T09:00:00Z\", \"text\": \"UPSTREAM_TIMEOUT dependency timeout: check upstream health and connection timings. Restarting the local service may not fix an upstream outage.\", \"retrieval_score\": 1.197441}]"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "ollama-9ad3db3403654cca9de347972128a94e",
+              "name": "submit_investigation",
+              "input": {
+                "evidence_ids": [
+                  "log-app",
+                  "log-upstream",
+                  "metric-errors",
+                  "deploy-app"
+                ],
+                "explanation": "The logs indicate an unhandled exception during order serialization and an upstream timeout to the inventory-api. The metrics show a high error ratio. The recent deployment might be related to the unhandled exception, while the upstream timeout suggests a dependency issue. Both issues are covered in the runbooks.",
+                "next_step": "Review the recent deployment changes and upstream service health. Consider rolling back the deployment if the unhandled exception is suspected to be caused by the new release.",
+                "runbook_ids": [
+                  "release@1",
+                  "upstream@1"
+                ],
+                "status": "hypothesis",
+                "suspected_cause": "application_regression"
+              }
+            }
+          ]
+        }
+      ],
+      "tool_errors": [],
+      "stop_reason": "submitted",
+      "measurement": {
+        "duration_ms": 22976.171,
+        "llm_calls": 3,
+        "model_turns": 3,
+        "usage_complete": true,
+        "input_tokens": 3235,
+        "output_tokens": 270,
+        "cache_tokens": 0,
+        "estimated_llm_cost_usd": null,
+        "input_usd_per_million": null,
+        "output_usd_per_million": null
+      },
+      "limits": {
+        "max_model_calls": 6,
+        "max_tool_calls": 8
+      },
+      "limitations": [
+        "Citation checks establish provenance, not semantic correctness.",
+        "Synthetic fixtures are not a held-out or production benchmark.",
+        "No remediation is executed."
+      ]
+    }
+  },
+  "provenance": {
+    "reviewed_date": "2026-11-03",
+    "evaluation_source": "Regraded saved real-model predictions; no additional inference.",
+    "repetitions_per_case": 1,
+    "installed_model_id_prefix": "500a1f067a9f",
+    "fixture_sha256": {
+      "incidents.json": "e2c4166af91497c8cb2c12b129e4de8e1e592facb51807b208e41df6533fc4e3",
+      "ground_truth.json": "5a20f1294b684178f59e015f86b6ef25e24d1115ca0f656f35837fa2685d9298"
+    },
+    "original_artifact_sha256": "9f5293547d7281fadbb7f66ca07cd8da506c46f784bee6028f7124f0efa14430"
+  }
+}
