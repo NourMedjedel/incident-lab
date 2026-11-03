@@ -145,7 +145,3 @@ Next work: stronger evidence-sufficiency and abstention policies, recovery from 
 ## License
 
 Project code and hand-authored synthetic fixtures are [MIT licensed](LICENSE). Models and third-party dependencies retain their own licenses; no model weights are distributed here.
-
-## En français
-
-Laboratoire d'investigation d'incidents avec une baseline à règles, un agent LangGraph et une évaluation reproductible sur données synthétiques. Les scores enregistrés peuvent être recalculés sans modèle ni compte. Qwen3-8B a été testé localement : sa couverture des causes est meilleure, mais ses décisions d'abstention sont moins fiables. Le projet documente ces échecs et n'exécute aucune remédiation.
