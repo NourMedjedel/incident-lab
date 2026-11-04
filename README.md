@@ -33,6 +33,8 @@ The guarded run accepted **zero incorrect diagnoses** and had **zero execution f
 
 [Results, traces, and remaining failures](docs/reliability-results.md) · [Original unguarded run: 5/8](docs/qwen3-8b-comparison.md)
 
+**Recorded example:** in `INC-007`, a connection-pool error plus **20/20 busy connections and 140 queued requests** supported a resource-exhaustion hypothesis. The result cites the exact log and metric records. [Inspect the evidence and model trace](examples/reliability-v2/development.json).
+
 ## Try it: no account, model, or dependencies
 
 Requires **Python 3.11+** and Git:
@@ -89,6 +91,12 @@ python3 -m incident_lab replay examples/reliability-v2/challenge.json --output a
 
 Expected agent scores: **8/8** and **11/12**. Replay checks fixture hashes and makes zero model requests. [Reproducibility details](docs/reproducibility.md)
 
+## Possible next integrations
+
+- **Observability:** adapters for external logs and metrics, such as Loki and Prometheus, with service/time boundaries and explicit handling of missing telemetry.
+- **Model hosting:** Amazon Bedrock as another provider, compared against the same evaluation suites before adoption.
+- **Operations:** read-only Kubernetes diagnostics and incident-ticket workflows, followed by organization-backed identity, operator approvals, and retained audit records.
+
 ## Engineering details
 
 | Reference | Contents |
@@ -100,6 +108,6 @@ Expected agent scores: **8/8** and **11/12**. Replay checks fixture hashes and m
 | [Verification](docs/verification.md) | 106 tests across Python 3.11–3.14, package checks, and verification gaps |
 | [Contributing](CONTRIBUTING.md) | Development setup, checks, and independent-evaluation protocol |
 
-**Scope:** a local reliability lab with synthetic workloads, four diagnostic labels, keyword runbook retrieval, and one approved recovery action. Independent evaluation, external service integrations, sustained-load testing, Kubernetes, Bedrock, and production identity/operations remain future work.
+**Scope:** a local reliability lab with synthetic workloads, four diagnostic labels, keyword runbook retrieval, and one approved recovery action. The integrations above, independent evaluation, and sustained-load testing remain future work.
 
 Project code and synthetic fixtures are [MIT licensed](LICENSE). Model weights are not distributed.
