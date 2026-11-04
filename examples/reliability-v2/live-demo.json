@@ -1,0 +1,512 @@
+{
+  "mode": "local-http-sandbox",
+  "before_fault": [
+    200,
+    200,
+    200
+  ],
+  "during_fault": [
+    503,
+    503,
+    503
+  ],
+  "investigation": {
+    "incident_id": "2bb0ef82e69440a887674ed0b63a93c5",
+    "service": "orders-api",
+    "as_of": "2026-11-04T00:22:02.618994+00:00",
+    "engine": "langgraph-agent-v2",
+    "mode": "live-sandbox-snapshot",
+    "provider": "ollama",
+    "model": "qwen3:8b",
+    "prompt_version": "investigator-v2.1",
+    "controller_version": "admissible-actions-v1",
+    "evidence_policy": {
+      "version": "evidence-v1",
+      "supported_candidates": {
+        "invalid_configuration": [
+          "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+          "log-30e550c0c9a94966baf9959eb21e0f57",
+          "log-41fc3262ce264eb597c06ff7c824e5e6",
+          "log-8836639e824345d991d8e369ad66aee4"
+        ]
+      },
+      "supporting_sets": {
+        "invalid_configuration": [
+          [
+            "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+            "log-8836639e824345d991d8e369ad66aee4"
+          ],
+          [
+            "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+            "log-41fc3262ce264eb597c06ff7c824e5e6"
+          ],
+          [
+            "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+            "log-30e550c0c9a94966baf9959eb21e0f57"
+          ]
+        ]
+      },
+      "decision": "supported",
+      "limitations": "Minimum recognized evidence contract; not semantic verification or proof of causality."
+    },
+    "evidence_source": {
+      "kind": "http-snapshot",
+      "url": "http://127.0.0.1:51125",
+      "snapshot_id": "2bb0ef82e69440a887674ed0b63a93c5",
+      "state_revision": 2
+    },
+    "status": "hypothesis",
+    "suspected_cause": "invalid_configuration",
+    "explanation": "The logs indicate a CONFIG_VALIDATION_FAILED error due to an unsupported scheme in the DATABASE_URL. The deployment history shows a recent change to the DATABASE_URL configuration, which likely caused the issue. The metrics show a high error ratio, supporting the hypothesis that the invalid configuration is the root cause.",
+    "next_step": "Verify the DATABASE_URL configuration and restore the known-good configuration as per the runbook instructions.",
+    "evidence_ids": [
+      "log-8836639e824345d991d8e369ad66aee4",
+      "metric-23b6203552514bc4b43b508e18b98c9a",
+      "deployment-f2c12de9f77e45b18aa8449c8f1d570f"
+    ],
+    "evidence": [
+      {
+        "id": "log-8836639e824345d991d8e369ad66aee4",
+        "kind": "log",
+        "timestamp": "2026-11-04T00:22:02.612413+00:00",
+        "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.",
+        "service": "orders-api"
+      },
+      {
+        "id": "metric-23b6203552514bc4b43b508e18b98c9a",
+        "kind": "metric",
+        "service": "orders-api",
+        "timestamp": "2026-11-04T00:22:02.618994+00:00",
+        "text": "http_error_ratio=0.5; request_count=6; error_count=3"
+      },
+      {
+        "id": "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+        "kind": "deployment",
+        "timestamp": "2026-11-04T00:22:02.591473+00:00",
+        "text": "Configuration deployment cfg-2 changed DATABASE_URL.",
+        "service": "orders-api"
+      }
+    ],
+    "runbooks": [
+      {
+        "id": "configuration-live@1",
+        "kind": "runbook",
+        "service": "orders-api",
+        "timestamp": "2026-11-04T00:22:02.618994+00:00",
+        "text": "CONFIG_VALIDATION_FAILED: inspect the configuration change. Restore known-good configuration only after an operator approves the exact proposal; verify real /orders requests afterward.",
+        "retrieval_score": 0.287682
+      }
+    ],
+    "cited_runbook_ids": [
+      "configuration-live@1"
+    ],
+    "observations": {
+      "logs": [
+        {
+          "id": "log-8836639e824345d991d8e369ad66aee4",
+          "kind": "log",
+          "timestamp": "2026-11-04T00:22:02.612413+00:00",
+          "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.",
+          "service": "orders-api"
+        },
+        {
+          "id": "log-41fc3262ce264eb597c06ff7c824e5e6",
+          "kind": "log",
+          "timestamp": "2026-11-04T00:22:02.605970+00:00",
+          "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.",
+          "service": "orders-api"
+        },
+        {
+          "id": "log-30e550c0c9a94966baf9959eb21e0f57",
+          "kind": "log",
+          "timestamp": "2026-11-04T00:22:02.598828+00:00",
+          "text": "ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.",
+          "service": "orders-api"
+        }
+      ],
+      "metrics": [
+        {
+          "id": "metric-23b6203552514bc4b43b508e18b98c9a",
+          "kind": "metric",
+          "service": "orders-api",
+          "timestamp": "2026-11-04T00:22:02.618994+00:00",
+          "text": "http_error_ratio=0.5; request_count=6; error_count=3"
+        }
+      ],
+      "deployments": [
+        {
+          "id": "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+          "kind": "deployment",
+          "timestamp": "2026-11-04T00:22:02.591473+00:00",
+          "text": "Configuration deployment cfg-2 changed DATABASE_URL.",
+          "service": "orders-api"
+        },
+        {
+          "id": "deployment-d70ba134485f477baf64ea7b6b8bda6c",
+          "kind": "deployment",
+          "timestamp": "2026-11-04T00:22:02.542202+00:00",
+          "text": "Configuration deployment initial established a known-good DATABASE_URL.",
+          "service": "orders-api"
+        }
+      ]
+    },
+    "trace": [
+      {
+        "sequence": 1,
+        "tool": "get_logs",
+        "arguments": {
+          "service": "orders-api"
+        },
+        "status": "ok",
+        "evidence_ids": [
+          "log-8836639e824345d991d8e369ad66aee4",
+          "log-41fc3262ce264eb597c06ff7c824e5e6",
+          "log-30e550c0c9a94966baf9959eb21e0f57"
+        ],
+        "duration_ms": 14.054
+      },
+      {
+        "sequence": 2,
+        "tool": "get_metrics",
+        "arguments": {
+          "service": "orders-api"
+        },
+        "status": "ok",
+        "evidence_ids": [
+          "metric-23b6203552514bc4b43b508e18b98c9a"
+        ],
+        "duration_ms": 10.87
+      },
+      {
+        "sequence": 3,
+        "tool": "get_deployments",
+        "arguments": {
+          "service": "orders-api"
+        },
+        "status": "ok",
+        "evidence_ids": [
+          "deployment-f2c12de9f77e45b18aa8449c8f1d570f",
+          "deployment-d70ba134485f477baf64ea7b6b8bda6c"
+        ],
+        "duration_ms": 8.282
+      },
+      {
+        "sequence": 4,
+        "tool": "search_runbooks",
+        "arguments": {
+          "limit": 1,
+          "query": "CONFIG_VALIDATION_FAILED",
+          "service": "orders-api"
+        },
+        "status": "ok",
+        "evidence_ids": [
+          "configuration-live@1"
+        ],
+        "duration_ms": 15.385
+      }
+    ],
+    "model_trace": [
+      {
+        "turn": 1,
+        "provider": "ollama",
+        "model": "qwen3:8b",
+        "offered_tools": [
+          "get_logs",
+          "get_metrics",
+          "get_deployments",
+          "search_runbooks",
+          "submit_investigation"
+        ],
+        "required_abstention": false,
+        "duration_ms": 10733.103,
+        "status": "ok",
+        "input_tokens": 872,
+        "output_tokens": 64,
+        "cache_tokens": 0
+      },
+      {
+        "turn": 2,
+        "provider": "ollama",
+        "model": "qwen3:8b",
+        "offered_tools": [
+          "get_logs",
+          "get_metrics",
+          "get_deployments",
+          "search_runbooks",
+          "submit_investigation"
+        ],
+        "required_abstention": false,
+        "duration_ms": 9339.805,
+        "status": "ok",
+        "input_tokens": 1573,
+        "output_tokens": 34,
+        "cache_tokens": 0
+      },
+      {
+        "turn": 3,
+        "provider": "ollama",
+        "model": "qwen3:8b",
+        "offered_tools": [
+          "get_logs",
+          "get_metrics",
+          "get_deployments",
+          "search_runbooks",
+          "submit_investigation"
+        ],
+        "required_abstention": false,
+        "duration_ms": 27134.658,
+        "status": "ok",
+        "input_tokens": 1728,
+        "output_tokens": 239,
+        "cache_tokens": 0
+      }
+    ],
+    "validation_errors": [],
+    "conversation": [
+      {
+        "role": "user",
+        "content": "{\"service\": \"orders-api\", \"title\": \"Orders service availability investigation\", \"evidence_cutoff\": \"2026-11-04T00:22:02.618994+00:00\"}"
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "ollama-3fb90755165e4f378074ba4fab391443",
+            "name": "get_logs",
+            "input": {
+              "service": "orders-api"
+            }
+          },
+          {
+            "type": "tool_use",
+            "id": "ollama-4d1844558cb442f2a8c2d6e802f70e4c",
+            "name": "get_metrics",
+            "input": {
+              "service": "orders-api"
+            }
+          },
+          {
+            "type": "tool_use",
+            "id": "ollama-c62206cbb80148c888a604c5dc72c1a0",
+            "name": "get_deployments",
+            "input": {
+              "service": "orders-api"
+            }
+          }
+        ]
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "tool_result",
+            "tool_use_id": "ollama-3fb90755165e4f378074ba4fab391443",
+            "content": "[{\"id\": \"log-8836639e824345d991d8e369ad66aee4\", \"kind\": \"log\", \"timestamp\": \"2026-11-04T00:22:02.612413+00:00\", \"text\": \"ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.\", \"service\": \"orders-api\"}, {\"id\": \"log-41fc3262ce264eb597c06ff7c824e5e6\", \"kind\": \"log\", \"timestamp\": \"2026-11-04T00:22:02.605970+00:00\", \"text\": \"ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.\", \"service\": \"orders-api\"}, {\"id\": \"log-30e550c0c9a94966baf9959eb21e0f57\", \"kind\": \"log\", \"timestamp\": \"2026-11-04T00:22:02.598828+00:00\", \"text\": \"ERROR CONFIG_VALIDATION_FAILED: DATABASE_URL has unsupported scheme.\", \"service\": \"orders-api\"}]"
+          },
+          {
+            "type": "tool_result",
+            "tool_use_id": "ollama-4d1844558cb442f2a8c2d6e802f70e4c",
+            "content": "[{\"id\": \"metric-23b6203552514bc4b43b508e18b98c9a\", \"kind\": \"metric\", \"service\": \"orders-api\", \"timestamp\": \"2026-11-04T00:22:02.618994+00:00\", \"text\": \"http_error_ratio=0.5; request_count=6; error_count=3\"}]"
+          },
+          {
+            "type": "tool_result",
+            "tool_use_id": "ollama-c62206cbb80148c888a604c5dc72c1a0",
+            "content": "[{\"id\": \"deployment-f2c12de9f77e45b18aa8449c8f1d570f\", \"kind\": \"deployment\", \"timestamp\": \"2026-11-04T00:22:02.591473+00:00\", \"text\": \"Configuration deployment cfg-2 changed DATABASE_URL.\", \"service\": \"orders-api\"}, {\"id\": \"deployment-d70ba134485f477baf64ea7b6b8bda6c\", \"kind\": \"deployment\", \"timestamp\": \"2026-11-04T00:22:02.542202+00:00\", \"text\": \"Configuration deployment initial established a known-good DATABASE_URL.\", \"service\": \"orders-api\"}]"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "ollama-ae574a67712d40fdbe44841f3a4badb0",
+            "name": "search_runbooks",
+            "input": {
+              "limit": 1,
+              "query": "CONFIG_VALIDATION_FAILED",
+              "service": "orders-api"
+            }
+          }
+        ]
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "tool_result",
+            "tool_use_id": "ollama-ae574a67712d40fdbe44841f3a4badb0",
+            "content": "[{\"id\": \"configuration-live@1\", \"kind\": \"runbook\", \"service\": \"orders-api\", \"timestamp\": \"2026-11-04T00:22:02.618994+00:00\", \"text\": \"CONFIG_VALIDATION_FAILED: inspect the configuration change. Restore known-good configuration only after an operator approves the exact proposal; verify real /orders requests afterward.\", \"retrieval_score\": 0.287682}]"
+          }
+        ]
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "ollama-67767c0e72d8404090dca821f2e52c66",
+            "name": "submit_investigation",
+            "input": {
+              "evidence_ids": [
+                "log-8836639e824345d991d8e369ad66aee4",
+                "metric-23b6203552514bc4b43b508e18b98c9a",
+                "deployment-f2c12de9f77e45b18aa8449c8f1d570f"
+              ],
+              "explanation": "The logs indicate a CONFIG_VALIDATION_FAILED error due to an unsupported scheme in the DATABASE_URL. The deployment history shows a recent change to the DATABASE_URL configuration, which likely caused the issue. The metrics show a high error ratio, supporting the hypothesis that the invalid configuration is the root cause.",
+              "next_step": "Verify the DATABASE_URL configuration and restore the known-good configuration as per the runbook instructions.",
+              "runbook_ids": [
+                "configuration-live@1"
+              ],
+              "status": "hypothesis",
+              "suspected_cause": "invalid_configuration"
+            }
+          }
+        ]
+      }
+    ],
+    "tool_errors": [],
+    "stop_reason": "submitted",
+    "measurement": {
+      "duration_ms": 47269.406,
+      "llm_calls": 3,
+      "model_turns": 3,
+      "usage_complete": true,
+      "input_tokens": 4173,
+      "output_tokens": 337,
+      "cache_tokens": 0,
+      "estimated_llm_cost_usd": null,
+      "input_usd_per_million": null,
+      "output_usd_per_million": null
+    },
+    "limits": {
+      "max_model_calls": 6,
+      "max_tool_calls": 8,
+      "max_repairs": 2
+    },
+    "repairs_used": 0,
+    "limitations": [
+      "Citation checks establish provenance, not semantic correctness.",
+      "Synthetic fixtures are not a held-out or production benchmark.",
+      "No remediation is executed."
+    ]
+  },
+  "state_directory": "artifacts/sandbox-demo/ed998d0253434e538ae4098c2b31f598",
+  "proposal": {
+    "id": "13ea0518cab1472eb58e3aee812ab6e6",
+    "parameters": {
+      "action": "restore_configuration",
+      "service": "orders-api",
+      "snapshot_id": "2bb0ef82e69440a887674ed0b63a93c5",
+      "expected_revision": 2,
+      "target_configuration": "known-good-initial"
+    },
+    "fingerprint": "45b1a28de9fc4e0bc2fa61bd2d451539f9e092e9d8aea97c690d81b1bb373231",
+    "status": "pending"
+  },
+  "approval": {
+    "id": "13ea0518cab1472eb58e3aee812ab6e6",
+    "status": "approved",
+    "expires": 1793751829.924764,
+    "fingerprint": "45b1a28de9fc4e0bc2fa61bd2d451539f9e092e9d8aea97c690d81b1bb373231"
+  },
+  "execution": {
+    "proposal_id": "13ea0518cab1472eb58e3aee812ab6e6",
+    "status": "executed",
+    "revision": 3,
+    "fingerprint": "45b1a28de9fc4e0bc2fa61bd2d451539f9e092e9d8aea97c690d81b1bb373231",
+    "replayed": false,
+    "verification": {
+      "statuses": [
+        200,
+        200,
+        200
+      ],
+      "recovered": true,
+      "timestamp": "2026-11-04T00:22:49.966260+00:00"
+    }
+  },
+  "after_recovery": [
+    200,
+    200,
+    200
+  ],
+  "audit": [
+    {
+      "sequence": 1,
+      "timestamp": "2026-11-04T00:22:02.591599+00:00",
+      "actor": "operator",
+      "event": "fault_injected",
+      "data": {
+        "fault": "invalid_configuration",
+        "revision": 2
+      }
+    },
+    {
+      "sequence": 2,
+      "timestamp": "2026-11-04T00:22:02.619161+00:00",
+      "actor": "reader",
+      "event": "snapshot_created",
+      "data": {
+        "revision": 2,
+        "snapshot_id": "2bb0ef82e69440a887674ed0b63a93c5"
+      }
+    },
+    {
+      "sequence": 3,
+      "timestamp": "2026-11-04T00:22:49.910679+00:00",
+      "actor": "executor",
+      "event": "proposal_created",
+      "data": {
+        "digest": "45b1a28de9fc4e0bc2fa61bd2d451539f9e092e9d8aea97c690d81b1bb373231",
+        "proposal_id": "13ea0518cab1472eb58e3aee812ab6e6"
+      }
+    },
+    {
+      "sequence": 4,
+      "timestamp": "2026-11-04T00:22:49.924952+00:00",
+      "actor": "operator",
+      "event": "proposal_approved",
+      "data": {
+        "digest": "45b1a28de9fc4e0bc2fa61bd2d451539f9e092e9d8aea97c690d81b1bb373231",
+        "expires": 1793751829.924764,
+        "proposal_id": "13ea0518cab1472eb58e3aee812ab6e6"
+      }
+    },
+    {
+      "sequence": 5,
+      "timestamp": "2026-11-04T00:22:49.943944+00:00",
+      "actor": "executor",
+      "event": "configuration_restored",
+      "data": {
+        "fingerprint": "45b1a28de9fc4e0bc2fa61bd2d451539f9e092e9d8aea97c690d81b1bb373231",
+        "proposal_id": "13ea0518cab1472eb58e3aee812ab6e6",
+        "replayed": false,
+        "revision": 3,
+        "status": "executed"
+      }
+    },
+    {
+      "sequence": 6,
+      "timestamp": "2026-11-04T00:22:49.966347+00:00",
+      "actor": "verifier",
+      "event": "recovery_checked",
+      "data": {
+        "proposal_id": "13ea0518cab1472eb58e3aee812ab6e6",
+        "recovered": true,
+        "statuses": [
+          200,
+          200,
+          200
+        ],
+        "timestamp": "2026-11-04T00:22:49.966260+00:00"
+      }
+    }
+  ],
+  "provenance": {
+    "inference_source_commit": "fe09410ffc57ba557d114e1af0e0d0516303e58e",
+    "runtime_manifest": "runtime.json",
+    "note": "Real local model investigation; --approve automates the explicit demo approval with the local operator role. Server has stopped. Subsequent resource-cleanup fix is not a new inference run."
+  }
+}

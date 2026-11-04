@@ -14,7 +14,11 @@ Expected counts:
 | Report | Behavior matches | Cases | Execution failures |
 | --- | --- | --- | --- |
 | Rules | 7 | 8 | 0 |
-| Recorded Qwen3-8B predictions | 5 | 8 | 1 |
+| Recorded Qwen3-8B v0.1 predictions | 5 | 8 | 1 |
+| Recorded guarded Qwen v0.2, original suite | 8 | 8 | 0 |
+| Recorded guarded Qwen v0.2, challenge suite | 11 | 12 | 0 |
+
+The v0.2 artifacts and commands are in [the current experiment](reliability-results.md), with a complete model digest, source hashes, and runtime settings. The original artifact below remains historical.
 
 Execution duration and generated timestamps vary. The offline replay checks observation/label file hashes before regrading and rejects incompatible data or incomplete artifacts. It recomputes metrics from the saved predictions, not from their saved summary. Historical model-request counts and tokens remain labeled as historical; replay makes no model calls.
 
@@ -44,6 +48,10 @@ uv run --locked --extra agent incident-lab compare --provider ollama --model qwe
 ```
 
 The adapter uses non-streaming chat, `think=false`, temperature 0, an 8,192-token context option, and a 1,024-token generation limit. Default investigator budgets are six model attempts and eight evidence-tool calls per case. These parameters remain visible in source and the output records the model name, prompt version, limits, usage, tool events, visible conversation, and stop reason.
+
+Version 0.2 also records evidence-policy/controller versions, offered tools, repair usage, and up to two corrective responses. It can require an abstention schema after observing a complete primary snapshot. The guarded workflow is not the same algorithm as the historical v0.1 investigator. Preserve new result paths and report the version rather than overwriting the reference.
+
+The twelve additional cases are selected with `--suite challenge`. To avoid replacing the default output files, specify distinct `--output` and `--report` paths for each suite. A separate [live HTTP demo](sandbox.md) exercises actual service failures and approved recovery; it needs no API key when using its default rules investigator.
 
 The reference run used Ollama model ID prefix `500a1f067a9f`. The first artifact did not capture the full immutable digest or detailed hardware, and model tags can move. Record `ollama list`, Ollama version, machine details, and any changed settings alongside a new experiment. Temperature 0 and identical prompts do not guarantee identical model outputs or timings.
 

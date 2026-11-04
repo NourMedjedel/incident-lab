@@ -7,6 +7,7 @@ All observations, logs, metrics, deployment events, runbooks, and expected label
 - `incident_lab/data/incidents.json`: observations available to the investigator.
 - `incident_lab/data/ground_truth.json`: evaluation labels, required evidence IDs, and relevant runbooks.
 - `examples/ollama-qwen3-8b/comparison.json`: recorded model outputs and grading, with fixture hashes.
+- `incident_lab/data/challenge_incidents.json` and `challenge_labels.json`: twelve additional project-authored cases in the separate `challenge` suite. The original files are unchanged.
 
 ## Incident schema
 
@@ -26,6 +27,6 @@ Required evidence IDs support coverage scoring; a reference set with no items is
 
 ## Dataset limits and changes
 
-The eight cases were developed with the baseline and later inspected against the agent. They are development data. They do not support generalization, production accuracy, safety, or time-saving claims.
+The original eight cases were developed with the baseline and later inspected against the agent. The twelve challenge cases were authored within the same project, before revising the policy implementation; the author knew both. Neither suite is independent or held out. They do not support generalization, production accuracy, safety, or time-saving claims.
 
 Fixture hashes make accidental changes detectable. Preserve versioned observations/labels and matching recorded examples when changing the corpus. New independently authored cases should be identified separately from examples used to tune the system.

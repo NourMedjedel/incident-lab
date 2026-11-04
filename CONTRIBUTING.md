@@ -23,7 +23,7 @@ Keep the rules baseline independently runnable. Optional providers should preser
 
 ## Data and result changes
 
-The existing eight cases are development fixtures, not held-out tests. Explain new labels and identify which changes were informed by existing model failures. Keep independently authored evaluation cases separate from cases used to tune prompts or rules.
+The existing eight cases are development fixtures, not held-out tests. Explain new labels and identify which changes were informed by existing model failures. Keep independently authored evaluation cases separate from cases used to tune prompts or rules. Follow the [independent-evaluation contribution protocol](docs/independent-evaluation.md); no independent suite has been completed yet.
 
 Fixture hashes are part of the recorded comparison contract. Changing the canonical corpus invalidates replay of the checked-in historical artifact on that checkout. Preserve historical data/version provenance and update example compatibility intentionally when versioning a dataset. Do not silently replace results with a more favorable run.
 

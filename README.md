@@ -2,13 +2,15 @@
 
 **A tool-using incident investigator with an inspectable baseline, bounded execution, and reproducible failure analysis.**
 
+When a service fails, engineers must piece together logs, metrics, recent changes, and runbooks under time pressure. Incident Lab tests whether an AI investigator can gather that evidence, explain a likely cause, and hand the case to a human when the evidence is missing or conflicting. A local service demonstrates the full workflow: observe a failure, investigate it, obtain approval for a specific recovery action, and check that requests succeed again.
+
 Incident Lab investigates synthetic service incidents using logs, metrics, deployment history, and versioned runbooks. It compares fixed diagnostic rules with a LangGraph agent and records the evidence behind each result.
 
-The engineering question: **does a model improve diagnostic coverage without guessing when evidence is missing?** The first local Qwen3-8B run found a cause the rules missed, but handled abstention less reliably.
+The engineering question: **does a model improve diagnostic coverage without guessing when evidence is missing?** The first local Qwen3-8B run found a cause the rules missed, but handled abstention less reliably. Version 0.2 adds backend evidence contracts, bounded response recovery, and a real local HTTP service with supervised configuration recovery.
 
 ## Results you can inspect
 
-| Eight-case development suite | Rules | Qwen3-8B, local Ollama |
+| Original v0.1 run: eight development cases | Rules | Qwen3-8B, local Ollama |
 | --- | --- | --- |
 | Expected behavior matches, including abstentions | 7/8 | 5/8 |
 | Correct diagnoses on diagnosable cases | 3/4 | 4/4 |
@@ -17,7 +19,9 @@ The engineering question: **does a model improve diagnostic coverage without gue
 
 This is one run per hand-authored synthetic case, not a held-out benchmark. Qwen guessed on insufficient and conflicting evidence and failed the submission protocol after a tool outage. [Read the failure analysis](docs/qwen3-8b-comparison.md) or [inspect the full recorded traces](examples/ollama-qwen3-8b/comparison.json).
 
-**Status: v0.1.0 research prototype.** Real local Ollama inference is verified. Hosted Groq/Anthropic adapters are tested with mocked HTTP responses. There is no live production-service integration or remediation execution.
+The guarded v0.2 workflow matched **8/8 original cases** and **11/12 additional challenge cases**, with zero accepted incorrect diagnoses and zero execution failures in this recorded run. The missed challenge case was an unnecessary abstention. These are project-authored cases; the result measures the combined model, controller, and evidence policy. [Inspect the current results and remaining failures](docs/reliability-results.md).
+
+**Status: v0.2.0 local reliability lab.** Real local Ollama inference and an isolated HTTP service are supported. The original v0.1 results above remain preserved. Recovery is restricted to restoring the sandbox's fixed known-good configuration after explicit approval. Hosted Groq/Anthropic adapters remain mock-tested; Kubernetes, Bedrock, and external production operations are future work.
 
 ## Quickstart: no account, model, or dependencies
 
@@ -57,7 +61,35 @@ This regrades the checked-in model predictions. It does not require Ollama, an A
 python3 -m incident_lab replay examples/ollama-qwen3-8b/comparison.json
 ```
 
-Expect **7 baseline matches, 5 agent matches, and 1 recorded agent execution failure**. The command verifies fixture hashes and writes a new report under `artifacts/`. Its request counts and timings describe the historical inference run; the replay itself makes **zero model requests**. See [reproducibility](docs/reproducibility.md).
+Expect **7 baseline matches, 5 agent matches, and 1 recorded agent execution failure** for the original v0.1 run. The command verifies fixture hashes and writes a new report under `artifacts/`. Its request counts and timings describe the historical inference run; the replay itself makes **zero model requests**. See [reproducibility](docs/reproducibility.md).
+
+Replay the current guarded results with distinct output paths:
+
+```bash
+python3 -m incident_lab replay examples/reliability-v2/development.json --output artifacts/replay-v2-development.json --report artifacts/replay-v2-development.md
+python3 -m incident_lab replay examples/reliability-v2/challenge.json --output artifacts/replay-v2-challenge.json --report artifacts/replay-v2-challenge.md
+```
+
+Expect **8/8** and **11/12** agent behavior matches, respectively.
+
+## Exercise a real HTTP failure and supervised recovery
+
+This runs a SQLite-backed orders service on an ephemeral loopback port, makes actual HTTP requests, injects a configuration failure, and investigates it through HTTP tools. It uses the rules baseline by default and needs no model or account:
+
+```bash
+python3 -m incident_lab sandbox demo
+python3 -m incident_lab sandbox demo --approve
+```
+
+The first command stops at a pending proposal. The second explicitly authorizes the demo action and verifies recovery with real requests: **HTTP 200 → HTTP 503 → HTTP 200**. State, role tokens, approvals, and audit history persist under the ignored `artifacts/` directory.
+
+For a model-driven investigation of that same running service:
+
+```bash
+uv run --locked --extra agent incident-lab sandbox demo --provider ollama --model qwen3:8b --approve
+```
+
+The agent never receives write credentials or action tools. Approval expires, exact parameters are fingerprint-bound, state revisions must match, and repeated execution is idempotent. See the [manual operator workflow and trust boundary](docs/sandbox.md).
 
 ## Run a real local model
 
@@ -106,6 +138,8 @@ flowchart LR
 - The agent chooses its read-only tools within model/tool-call budgets. It receives no filesystem or shell capability.
 - The backend validates the final schema, fetched citation IDs, and required telemetry. A citation ID check establishes provenance, not semantic correctness.
 - Missing telemetry, unsupported output, model errors, and abstention remain distinct outcomes in the trace and evaluation.
+- Version 0.2 checks minimum diagnostic evidence and competing signals in the backend. After primary evidence requires escalation, the controller exposes only an abstention submission. These are application-policy decisions, not claims that the model independently learned safe behavior.
+- Corrective responses are bounded and traced; an exhausted budget remains an execution failure.
 
 The baseline uses explicit signatures. Its runbook retrieval supplies reference material after the rules form a hypothesis. The model can retrieve runbooks during investigation. This is keyword retrieval, not a dense-vector or hybrid-search implementation.
 
@@ -130,6 +164,9 @@ CI runs checks without API keys, Ollama, or paid inference. Package building and
 | [Reproducibility](docs/reproducibility.md) | Setup, locked dependencies, offline replay, and model-result limits |
 | [Provider setup](docs/free-prototype.md) | Ollama, hosted options, environment variables, and common errors |
 | [Agent design](docs/agent.md) | Workflow, validation, budgets, and tracing |
+| [Current experiment](docs/reliability-results.md) | Guarded Qwen results, missed diagnosis, runtime manifest, and live recovery |
+| [Reliability controls](docs/reliability.md) | Evidence sufficiency, admissible actions, response repair, and challenge cases |
+| [Live sandbox](docs/sandbox.md) | Real HTTP failure injection, explicit approval, and verified recovery |
 | [Evaluation](docs/evaluation.md) | Metrics, case descriptions, and grading policy |
 | [Data provenance](docs/data.md) | Synthetic fixture schema and label interpretation |
 | [Architecture decisions](docs/adr/0001-baseline-before-agent.md) | Baseline-first rationale; see also [agent orchestration](docs/adr/0002-bounded-agent-and-explicit-results.md) |
@@ -138,9 +175,9 @@ CI runs checks without API keys, Ollama, or paid inference. Package building and
 
 ## Known limits and next work
 
-The dataset has eight development cases and a four-label cause vocabulary. It does not measure general incident reasoning, production reliability, or prompt-injection resistance. Saved results expose unsupported diagnoses, weak runbook relevance, and protocol failure; they are not hidden by the overall score.
+The original dataset has eight development cases; a separate project-authored challenge suite adds twelve edge cases. Neither is independently authored or held out. The four-label cause vocabulary and recognized telemetry contracts do not measure general incident reasoning, production reliability, or prompt-injection resistance. Original failures remain preserved.
 
-Next work: stronger evidence-sufficiency and abstention policies, recovery from invalid submissions, independently authored evaluation cases, then live-service adapters and supervised sandbox actions. Kubernetes, Bedrock, and production operations integration are future work.
+Next work: independently reviewed evaluation cases, broader structured telemetry contracts, better retrieval, sustained-load and recovery testing, and external service adapters. The local sandbox currently exercises one recoverable configuration failure and demonstrates control boundaries on one machine. Kubernetes, Bedrock, and production identity/operations integration are future work.
 
 ## License
 

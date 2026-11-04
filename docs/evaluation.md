@@ -22,6 +22,7 @@ All incident timestamps are fixed in January 2026. They represent replay time, n
 ## Metrics
 
 - **Behavior matches:** predicted cause equals the expected cause, including null/null abstentions.
+- **Incorrect hypotheses:** non-null diagnostic answers that do not match the expected answer. Blocking a diagnosis may reduce this count while still leaving explicit execution failures.
 - **Answer coverage:** non-null predictions divided by all cases. High answered-case accuracy can coexist with low coverage.
 - **Diagnostic recall:** correct diagnoses divided by cases with a non-null expected cause.
 - **Accuracy when answered:** correct diagnoses divided by non-null predictions.
@@ -41,6 +42,10 @@ Before comparing an agent, preserve this baseline and the incident-time view. Au
 
 The injection test proves only that a rule engine does not execute retrieved instructions. An LLM agent requires a separate adversarial evaluation and backend authorization checks.
 
+Version 0.2 evaluates the combined model/controller/policy workflow. Its backend can require escalation and expose only an abstention schema after observing insufficient or competing signals. Improvements therefore measure the guarded application, not an independently improved foundation model. Schema/evidence rejection is not itself a successful abstention; the model must submit a valid result within budget, or the run remains failed.
+
+Use `--suite challenge` to evaluate twelve additional project-authored cases. These are separate from the original eight, but are not independent or held out. Suite-specific hashes are saved in comparisons and checked on replay. Original v0.1 artifacts remain compatible.
+
 ## Live comparison
 
-`compare` uses a real model provider to evaluate the same incident-time fixture view, then writes a baseline/agent report and full traces. The recorded [local Qwen comparison](qwen3-8b-comparison.md) matched expected behavior on 5/8 cases; the baseline matched 7/8. Hosted providers have not been evaluated with actual model requests. The scripted graph example is refused by this runner. The `replay` command regrades saved predictions without inference; see [reproducibility](reproducibility.md).
+`compare` uses a real model provider to evaluate the same incident-time fixture view, then writes a baseline/agent report and full traces. The recorded [local Qwen comparison](qwen3-8b-comparison.md) matched expected behavior on 5/8 cases; the baseline matched 7/8. The guarded v0.2 workflow matched 8/8 original and 11/12 challenge cases in [a separately recorded experiment](reliability-results.md). Hosted providers have not been evaluated with actual model requests. The scripted graph example is refused by this runner. The `replay` command regrades saved predictions without inference; see [reproducibility](reproducibility.md).

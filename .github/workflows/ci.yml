@@ -25,7 +25,10 @@ jobs:
       - run: python scripts/check_docs.py
       - run: uv run --locked incident-lab evaluate
       - run: python -m incident_lab replay examples/ollama-qwen3-8b/comparison.json
+      - run: python -m incident_lab replay examples/reliability-v2/development.json
+      - run: python -m incident_lab replay examples/reliability-v2/challenge.json
       - run: uv run --locked --extra agent incident-lab agent-demo
+      - run: python -m incident_lab sandbox demo --approve
 
   package:
     runs-on: ubuntu-latest
@@ -46,7 +49,10 @@ jobs:
           cd /tmp
           /tmp/incident-lab-wheel/bin/python -m incident_lab demo --scenario INC-001
           /tmp/incident-lab-wheel/bin/python -m incident_lab evaluate
+          /tmp/incident-lab-wheel/bin/python -m incident_lab evaluate --suite challenge
           /tmp/incident-lab-wheel/bin/python -m incident_lab replay "$GITHUB_WORKSPACE/examples/ollama-qwen3-8b/comparison.json"
+          /tmp/incident-lab-wheel/bin/python -m incident_lab replay "$GITHUB_WORKSPACE/examples/reliability-v2/challenge.json"
+          /tmp/incident-lab-wheel/bin/python -m incident_lab sandbox demo --approve
 
   container:
     runs-on: ubuntu-latest
@@ -56,3 +62,4 @@ jobs:
       - run: docker build -t incident-lab .
       - run: docker run --rm incident-lab demo --scenario INC-001
       - run: docker run --rm incident-lab evaluate
+      - run: docker run --rm incident-lab sandbox demo --approve

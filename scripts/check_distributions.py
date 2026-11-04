@@ -20,6 +20,8 @@ def main() -> int:
         "incident_lab/__main__.py",
         "incident_lab/data/incidents.json",
         "incident_lab/data/ground_truth.json",
+        "incident_lab/data/challenge_incidents.json",
+        "incident_lab/data/challenge_labels.json",
         f"{prefix}.dist-info/licenses/LICENSE",
     }
     with tarfile.open(dist / f"{prefix}.tar.gz", "r:gz") as archive:

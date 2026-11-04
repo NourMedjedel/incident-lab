@@ -16,3 +16,6 @@ artifacts/
 *.key
 .aws/
 .ollama/
+*.token
+*.sqlite3
+*.sqlite3-*
