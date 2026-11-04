@@ -10,7 +10,7 @@ Built with **Python, LangGraph, Ollama/Qwen3, BM25 retrieval, HTTP, and SQLite**
 
 ## Investigation and recovery flow
 
-![Animated workflow: service alert, read-only evidence gathering, validation, operator approval, configuration recovery and HTTP verification. Insufficient evidence leads to abstention; invalid approval blocks action.](docs/assets/incident-workflow.gif)
+![Animated workflow: service alert, read-only evidence gathering, validation, operator approval, configuration recovery and HTTP verification. Insufficient evidence leads to abstention; invalid approval blocks action.](docs/assets/incident-workflow.gif?v=2)
 
 Illustrated sandbox workflow. [View the still image](docs/assets/incident-workflow.png).
 

@@ -15,11 +15,13 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "assets"
-WIDTH, HEIGHT, FPS = 1120, 570, 8
+WIDTH, HEIGHT, FPS, SCALE = 1120, 570, 8, 2
 BG, INK, MUTED = "#f5f7fb", "#17243b", "#5a6980"
 BLUE, GREEN, AMBER, RED = "#3864df", "#147d65", "#a26915", "#c04d57"
 LINE = "#c7d0df"
-FONTS = {size: ImageFont.load_default(size=size) for size in (12, 14, 15, 17, 20, 25, 32)}
+FONTS = {
+    size: ImageFont.load_default(size=size * SCALE) for size in (14, 15, 17, 18, 20, 22, 24, 32)
+}
 
 NODES = {
     "alert": (40, 172, 216, 274),
@@ -31,13 +33,13 @@ NODES = {
     "stop": (688, 338, 864, 412),
 }
 LABELS = {
-    "alert": ("Service alert", "HTTP 503", "Orders unavailable"),
-    "evidence": ("Gather evidence", "Logs, metrics, changes", "Runbooks / read-only"),
-    "policy": ("Check evidence", "Supported hypothesis?", "Citations + sufficiency"),
-    "approval": ("Operator approval", "Exact action + expiry", "State checks required"),
-    "recover": ("Recover + verify", "Fixed config restore", "Check HTTP requests"),
-    "abstain": ("Abstain", "Request human review", ""),
-    "stop": ("No action", "Approval is not valid", ""),
+    "alert": ("Alert", "HTTP 503", "Orders unavailable"),
+    "evidence": ("Evidence", "Logs + metrics", "Changes + docs"),
+    "policy": ("Validate", "Cause + citations", "Evidence required"),
+    "approval": ("Approve", "Operator review", "Expiring approval"),
+    "recover": ("Recover", "Restore config", "HTTP checks"),
+    "abstain": ("Abstain", "Human review", ""),
+    "stop": ("No action", "Invalid approval", ""),
 }
 EDGES = [
     ("alert", "evidence"),
@@ -124,8 +126,22 @@ STAGES = [
 ]
 
 
-def text(draw, xy, value, size=15, fill=INK, anchor=None):
-    draw.text(xy, value, font=FONTS[size], fill=fill, anchor=anchor)
+def scaled(values):
+    return tuple(value * SCALE for value in values)
+
+
+def text(draw, xy, value, size=17, fill=INK, anchor=None):
+    draw.text(scaled(xy), value, font=FONTS[size], fill=fill, anchor=anchor)
+
+
+def rounded_box(draw, bounds, *, radius, fill, outline=None, width=1):
+    draw.rounded_rectangle(
+        scaled(bounds), radius=radius * SCALE, fill=fill, outline=outline, width=width * SCALE
+    )
+
+
+def circle(draw, bounds, fill):
+    draw.ellipse(scaled(bounds), fill=fill)
 
 
 def path_points(source, target):
@@ -138,23 +154,23 @@ def path_points(source, target):
 
 def arrow(draw, source, target, color=LINE, width=2):
     start, end = path_points(source, target)
-    draw.line((start, end), fill=color, width=width)
+    draw.line((scaled(start), scaled(end)), fill=color, width=width * SCALE)
     x, y = end
     if target in {"abstain", "stop"}:
         points = ((x - 4, y - 8), (x, y), (x + 4, y - 8))
     else:
         points = ((x - 8, y - 4), (x, y), (x - 8, y + 4))
-    draw.line(points, fill=color, width=width)
+    draw.line(tuple(scaled(point) for point in points), fill=color, width=width * SCALE)
 
 
 def frame(stage_index, progress):
     _, active, completed, edge, heading, detail, accent = STAGES[stage_index]
-    image = Image.new("RGB", (WIDTH, HEIGHT), BG)
+    image = Image.new("RGB", (WIDTH * SCALE, HEIGHT * SCALE), BG)
     draw = ImageDraw.Draw(image)
     text(draw, (40, 30), "Incident Lab", 32)
-    text(draw, (40, 75), "Evidence first. Operator-controlled recovery.", 17, MUTED)
-    draw.rounded_rectangle((843, 37, 1080, 68), radius=15, fill="#e8edf8")
-    text(draw, (961, 52), "ILLUSTRATED WORKFLOW", 12, BLUE, "mm")
+    text(draw, (40, 75), "Evidence first. Operator-controlled recovery.", 20, MUTED)
+    rounded_box(draw, (843, 37, 1080, 73), radius=18, fill="#e8edf8")
+    text(draw, (961, 55), "LOCAL SANDBOX", 17, BLUE, "mm")
 
     for source, target in EDGES:
         passed = source in completed and (target in completed or target == active)
@@ -176,7 +192,8 @@ def frame(stage_index, progress):
                 if accent == GREEN
                 else "#fff0f1"
             )
-        draw.rounded_rectangle(
+        rounded_box(
+            draw,
             bounds,
             radius=14,
             fill=fill,
@@ -186,46 +203,47 @@ def frame(stage_index, progress):
         title, first, second = LABELS[key]
         if key not in {"abstain", "stop"}:
             step = list(NODES).index(key) + 1
-            draw.ellipse(
-                (x1, y1 - 33, x1 + 23, y1 - 10), fill=color if selected or passed else "#e4e9f2"
+            circle(
+                draw,
+                (x1, y1 - 33, x1 + 23, y1 - 10),
+                fill=color if selected or passed else "#e4e9f2",
             )
             text(
                 draw,
                 (x1 + 11, y1 - 21),
                 str(step),
-                12,
+                14,
                 "#ffffff" if selected or passed else MUTED,
                 "mm",
             )
-            text(draw, (x1 + 13, y1 + 20), title, 17, INK)
-            text(draw, (x1 + 13, y1 + 51), first, 14, color)
-            text(draw, (x1 + 13, y1 + 74), second, 12, MUTED)
+            text(draw, (x1 + 13, y1 + 15), title, 24, INK)
+            text(draw, (x1 + 13, y1 + 51), first, 17, color)
+            text(draw, (x1 + 13, y1 + 76), second, 17, MUTED)
         else:
-            text(draw, ((x1 + x2) / 2, y1 + 23), title, 17, color, "mm")
-            text(draw, ((x1 + x2) / 2, y1 + 49), first, 12, MUTED, "mm")
-    text(draw, (485, 305), "Insufficient / conflicting", 12, MUTED)
-    text(draw, (701, 305), "Not authorized", 12, MUTED)
-    text(draw, (916, 305), "Local sandbox only", 12, MUTED)
+            text(draw, ((x1 + x2) / 2, y1 + 23), title, 24, color, "mm")
+            text(draw, ((x1 + x2) / 2, y1 + 53), first, 17, MUTED, "mm")
+    text(draw, (477, 302), "Missing / conflicting", 17, MUTED)
+    text(draw, (702, 302), "Not authorized", 17, MUTED)
 
     if edge:
         start, end = path_points(*edge)
         fraction = (progress * 2) % 1
         x = start[0] + (end[0] - start[0]) * fraction
         y = start[1] + (end[1] - start[1]) * fraction
-        draw.ellipse((x - 5, y - 5, x + 5, y + 5), fill=accent)
+        circle(draw, (x - 5, y - 5, x + 5, y + 5), fill=accent)
 
-    draw.rounded_rectangle((40, 442, 1080, 534), radius=14, fill="#ffffff", outline="#d6deea")
-    draw.rounded_rectangle((40, 458, 44, 517), radius=2, fill=accent)
-    text(draw, (60, 461), heading, 20, accent)
-    text(draw, (60, 497), detail, 15, MUTED)
+    rounded_box(draw, (40, 442, 1080, 534), radius=14, fill="#ffffff", outline="#d6deea")
+    rounded_box(draw, (40, 458, 44, 517), radius=2, fill=accent)
+    text(draw, (60, 459), heading, 24, accent)
+    text(draw, (60, 499), detail, 18, MUTED)
     for i in range(len(STAGES)):
         x = 958 + i * 14
-        draw.ellipse((x, 423, x + 6, 429), fill=accent if i == stage_index else "#d2dbea")
+        circle(draw, (x, 423, x + 6, 429), fill=accent if i == stage_index else "#d2dbea")
     text(
         draw,
         (40, 550),
-        "Synthetic local sandbox / illustrated sequence, not a live recording or measured timings",
-        12,
+        "Illustrated workflow / not a live recording",
+        17,
         MUTED,
     )
     return image
@@ -233,16 +251,18 @@ def frame(stage_index, progress):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    images = []
+    # A shared palette prevents color changes between frames.
+    swatches = Image.new("RGB", (WIDTH * SCALE, HEIGHT * SCALE * len(STAGES)))
+    for index in range(len(STAGES)):
+        swatches.paste(frame(index, 0.5), (0, index * HEIGHT * SCALE))
+    palette = swatches.quantize(colors=256)
+    frames = []
     for index, (duration, *_) in enumerate(STAGES):
         count = math.ceil(duration * FPS)
-        images.extend(frame(index, i / count) for i in range(count))
-    # A shared palette prevents color changes between frames.
-    swatches = Image.new("RGB", (WIDTH, HEIGHT * len(STAGES)))
-    for index in range(len(STAGES)):
-        swatches.paste(frame(index, 0.5), (0, index * HEIGHT))
-    palette = swatches.quantize(colors=96)
-    frames = [item.quantize(palette=palette, dither=Image.Dither.NONE) for item in images]
+        frames.extend(
+            frame(index, i / count).quantize(palette=palette, dither=Image.Dither.NONE)
+            for i in range(count)
+        )
     frames[0].save(
         OUT / "incident-workflow.gif",
         save_all=True,
