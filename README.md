@@ -10,17 +10,9 @@ Built with **Python, LangGraph, Ollama/Qwen3, BM25 retrieval, HTTP, and SQLite**
 
 ## Investigation and recovery flow
 
-```mermaid
-flowchart TD
-    Alert[Service alert] --> Gather["Read-only investigation:<br/>logs, metrics, deployments and runbooks"]
-    Gather --> Check{"Evidence supports<br/>one cause?"}
-    Check -->|Missing or conflicting| Abstain[Abstain and request human review]
-    Check -->|Yes| Hypothesis[Evidence-backed hypothesis]
-    Hypothesis -->|Eligible sandbox recovery| Approval["Separate operator workflow:<br/>propose and approve exact action"]
-    Approval -->|Missing, expired or stale approval| Stop[No action]
-    Approval -->|Valid approval and state checks| Restore[Restore known-good configuration]
-    Restore --> Verify[Verify recovery with actual HTTP requests]
-```
+![Animated workflow: service alert, read-only evidence gathering, validation, operator approval, configuration recovery and HTTP verification. Insufficient evidence leads to abstention; invalid approval blocks action.](docs/assets/incident-workflow.gif)
+
+Illustrated sandbox workflow. [View the still image](docs/assets/incident-workflow.png).
 
 ## Recorded results
 

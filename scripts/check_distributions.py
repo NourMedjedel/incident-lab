@@ -42,7 +42,7 @@ def main() -> int:
             str(path.relative_to(root))
             for path in (root / directory).rglob("*")
             if path.is_file()
-            and path.suffix in {".py", ".json", ".md", ".yml"}
+            and path.suffix in {".py", ".json", ".md", ".yml", ".gif", ".png"}
             and "__pycache__" not in path.parts
         )
     missing = (required_wheel - wheel_files) | (required_source - source_files)

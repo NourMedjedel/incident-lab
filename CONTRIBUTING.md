@@ -29,6 +29,8 @@ Fixture hashes are part of the recorded comparison contract. Changing the canoni
 
 ## Propose a change
 
+The README animation is an illustrated workflow. Regenerate it with `uv run --script scripts/render_workflow.py`; Pillow is isolated to that rendering command and is not an application dependency. Commit both the GIF and its static PNG alongside any renderer change.
+
 Open an issue or pull request with the problem, proposed behavior, relevant traces, and checks run. Include only synthetic or publishable data. Keep credentials, local environments, downloaded weights, and generated working traces out of the commit; `artifacts/` is ignored. The curated examples are intentionally included.
 
 Model requests are not part of the default test suite, and a successful API response is not evidence of improved quality. Compare against the baseline and report failure slices as well as overall counts.
