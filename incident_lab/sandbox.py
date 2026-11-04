@@ -12,7 +12,7 @@ import os
 import secrets
 import sqlite3
 import time
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -67,7 +67,7 @@ class SandboxStore:
                     "deployment",
                     "Configuration deployment initial established a known-good DATABASE_URL.",
                 )
-        with sqlite3.connect(self.directory / "orders.sqlite3") as db:
+        with closing(sqlite3.connect(self.directory / "orders.sqlite3")) as db, db:
             db.execute("CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY, status TEXT)")
             db.execute("INSERT OR IGNORE INTO orders VALUES (1, 'ready')")
 
@@ -148,7 +148,7 @@ class SandboxStore:
                 )
                 status, payload = 503, {"error": "configuration_invalid", "service": SERVICE}
             else:
-                with sqlite3.connect(self.directory / "orders.sqlite3") as business:
+                with closing(sqlite3.connect(self.directory / "orders.sqlite3")) as business:
                     rows = business.execute("SELECT id,status FROM orders").fetchall()
                 status, payload = (
                     200,
