@@ -8,6 +8,20 @@ When a service fails, engineers must piece together logs, metrics, recent change
 
 Built with **Python, LangGraph, Ollama/Qwen3, BM25 retrieval, HTTP, and SQLite**. No paid API is required for the local demo.
 
+## Investigation and recovery flow
+
+```mermaid
+flowchart TD
+    Alert[Service alert] --> Gather["Read-only investigation:<br/>logs, metrics, deployments and runbooks"]
+    Gather --> Check{"Evidence supports<br/>one cause?"}
+    Check -->|Missing or conflicting| Abstain[Abstain and request human review]
+    Check -->|Yes| Hypothesis[Evidence-backed hypothesis]
+    Hypothesis -->|Eligible sandbox recovery| Approval["Separate operator workflow:<br/>propose and approve exact action"]
+    Approval -->|Missing, expired or stale approval| Stop[No action]
+    Approval -->|Valid approval and state checks| Restore[Restore known-good configuration]
+    Restore --> Verify[Verify recovery with actual HTTP requests]
+```
+
 ## Recorded results
 
 | Expected behavior matches | Rules baseline | Guarded Qwen3-8B |
