@@ -36,8 +36,7 @@ The initial publication candidate passed 71 tests and 8 parameter subtests acros
 
 ## Known verification gaps
 
-- Remote GitHub Actions results for this feature branch have not been verified here.
-- The local Docker daemon was unavailable; container execution remains a remote CI check, not a verified local deployment.
+- [GitHub Actions run for `9965f04`](https://github.com/NourMedjedel/incident-lab/actions/runs/41750029780) passed all four Python versions, package installation, and Docker build/baseline/evaluation/HTTP recovery checks. The local Docker daemon was unavailable; container verification was performed by GitHub Actions.
 - New inference is not byte-for-byte reproducible; no repeated-run accuracy or latency distribution was measured.
 - External independent evaluation, sustained-load/soak testing, enterprise IAM, and external service integration remain outstanding.
 - The sandbox exercises one workload and one approved recovery action on one machine. Kubernetes, Bedrock, and production operations are future work.

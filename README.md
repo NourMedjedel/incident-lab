@@ -1,5 +1,7 @@
 # Incident Lab
 
+[![Python checks](https://github.com/NourMedjedel/incident-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/NourMedjedel/incident-lab/actions/workflows/ci.yml)
+
 **An AI incident investigator that gathers evidence, abstains when it cannot justify a diagnosis, and keeps recovery under operator control.**
 
 When a service fails, engineers must piece together logs, metrics, recent changes, and runbooks under time pressure. Incident Lab tests whether an AI investigator can gather that evidence, explain a likely cause, and hand the case to a human when evidence is missing or conflicting. A local service demonstrates the workflow: observe a failure, investigate it, approve a specific recovery action, and check that requests succeed again.
@@ -35,6 +37,13 @@ Approved recovery verified with actual HTTP: [200, 200, 200]
 ```
 
 It uses the rules baseline by default. Omit `--approve` to stop at a pending proposal. The flag automates approval for this isolated demo; the [manual workflow](docs/sandbox.md) lets an operator inspect and approve an individual proposal. The server stops afterward; evidence and audit history remain under the ignored `artifacts/` directory.
+
+Or run the same dependency-free demo in Docker:
+
+```bash
+docker build -t incident-lab .
+docker run --rm incident-lab sandbox demo --approve
+```
 
 ## Run the AI investigator locally
 
