@@ -14,16 +14,28 @@ def read_resource(name: str) -> dict:
     return json.loads(files("incident_lab").joinpath("data", name).read_text(encoding="utf-8"))
 
 
-def fixture_manifest() -> dict[str, str]:
+SUITES = {
+    "development": ("incidents.json", "ground_truth.json"),
+    "challenge": ("challenge_incidents.json", "challenge_labels.json"),
+}
+
+
+def suite_resources(suite: str) -> tuple[str, str]:
+    if suite not in SUITES:
+        raise ValueError(f"Unknown evaluation suite: {suite}")
+    return SUITES[suite]
+
+
+def fixture_manifest(suite: str = "development") -> dict[str, str]:
     """Identify the exact observations and labels used to score a run."""
     return {
         name: hashlib.sha256(files("incident_lab").joinpath("data", name).read_bytes()).hexdigest()
-        for name in ("incidents.json", "ground_truth.json")
+        for name in suite_resources(suite)
     }
 
 
-def load_incidents() -> dict[str, Incident]:
-    raw = read_resource("incidents.json")
+def load_incidents(suite: str = "development") -> dict[str, Incident]:
+    raw = read_resource(suite_resources(suite)[0])
     result = {}
     for case in raw["incidents"]:
         incident = Incident(

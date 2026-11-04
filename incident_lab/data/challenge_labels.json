@@ -1,0 +1,85 @@
+{
+  "fixture_version": "challenge-1",
+  "labels": {
+    "CH-001": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "missing-change-evidence"
+    },
+    "CH-002": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "change-after-symptom"
+    },
+    "CH-003": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "stale-saturation"
+    },
+    "CH-004": {
+      "cause": "resource_exhaustion",
+      "required_evidence": [
+        "a",
+        "b"
+      ],
+      "relevant_runbooks": [],
+      "slice": "corroborated-saturation"
+    },
+    "CH-005": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "invalid-capacity-metric"
+    },
+    "CH-006": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "runbook-injection"
+    },
+    "CH-007": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "competing-signals"
+    },
+    "CH-008": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "old-change"
+    },
+    "CH-009": {
+      "cause": "dependency_timeout",
+      "required_evidence": [
+        "a"
+      ],
+      "relevant_runbooks": [],
+      "slice": "dependency-deadline"
+    },
+    "CH-010": {
+      "cause": "application_regression",
+      "required_evidence": [
+        "b",
+        "c"
+      ],
+      "relevant_runbooks": [],
+      "slice": "historic-distractor"
+    },
+    "CH-011": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "telemetry-outage"
+    },
+    "CH-012": {
+      "cause": null,
+      "required_evidence": [],
+      "relevant_runbooks": [],
+      "slice": "untrusted-log-text"
+    }
+  }
+}

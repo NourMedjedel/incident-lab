@@ -20,7 +20,10 @@ def main(argv=None) -> int:
         description="Incident Lab: read-only investigation baseline and bounded agent"
     )
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("list", help="List synthetic incident fixtures")
+    from .sandbox_cli import add_commands
+
+    add_commands(commands)
+    listing = commands.add_parser("list", help="List synthetic incident fixtures")
     demo = commands.add_parser("demo", help="Replay one incident with the rules baseline")
     demo.add_argument("--scenario", default="INC-001")
     demo.add_argument("--output", help="Write the full JSON evidence trace")
@@ -47,6 +50,8 @@ def main(argv=None) -> int:
     )
     comparison.add_argument("--output", default="artifacts/comparison.json")
     comparison.add_argument("--report", default="artifacts/comparison.md")
+    for command in (listing, demo, benchmark, agent, comparison):
+        command.add_argument("--suite", choices=["development", "challenge"], default="development")
     for command in (agent, comparison):
         command.add_argument(
             "--provider",
@@ -65,6 +70,9 @@ def main(argv=None) -> int:
             "--max-tool-calls", type=int, default=8, help="Per-incident evidence tool budget (1–32)"
         )
         command.add_argument(
+            "--max-repairs", type=int, default=2, help="Corrective responses allowed (0–4)"
+        )
+        command.add_argument(
             "--input-rate",
             type=float,
             help="Optional input USD per million tokens; supply with --output-rate",
@@ -74,13 +82,23 @@ def main(argv=None) -> int:
         )
     args = parser.parse_args(argv)
 
+    if args.command in {"sandbox", "investigate-live"}:
+        from .sandbox import SandboxError
+        from .sandbox_cli import run
+
+        try:
+            return run(args)
+        except (SandboxError, ProviderError, ValueError, OSError) as error:
+            print(f"Sandbox error: {error}", file=sys.stderr)
+            return 2
+
     if args.command == "list":
-        for incident in load_incidents().values():
+        for incident in load_incidents(args.suite).values():
             print(f"{incident.id}: {incident.title}")
         return 0
 
     if args.command == "evaluate":
-        result = evaluate()
+        result = evaluate(suite=args.suite)
         write_json(args.output, result)
         report = Path(args.report)
         report.parent.mkdir(parents=True, exist_ok=True)
@@ -133,10 +151,14 @@ def main(argv=None) -> int:
                     "max_tool_calls": args.max_tool_calls,
                     "input_rate": args.input_rate,
                     "output_rate": args.output_rate,
+                    "max_repairs": args.max_repairs,
                 }
             if args.command == "compare":
                 result = compare(
-                    provider, progress=lambda message: print(message, flush=True), **options
+                    provider,
+                    suite=args.suite,
+                    progress=lambda message: print(message, flush=True),
+                    **options,
                 )
                 write_json(args.output, result)
                 report = Path(args.report)
@@ -145,7 +167,7 @@ def main(argv=None) -> int:
                 print(render_comparison(result))
                 print(f"Full results and traces: {args.output}")
                 return 1 if result["agent"]["summary"]["failed_count"] else 0
-            incidents = load_incidents()
+            incidents = load_incidents(getattr(args, "suite", "development"))
             if scenario not in incidents:
                 parser.error(
                     f"Unknown scenario {scenario!r}; use 'list' to see available incidents"
@@ -167,7 +189,7 @@ def main(argv=None) -> int:
         print(f"Full protocol and evidence trace: {args.output}")
         return 1 if result["status"] == "failed" else 0
 
-    incidents = load_incidents()
+    incidents = load_incidents(args.suite)
     if args.scenario not in incidents:
         parser.error(f"Unknown scenario {args.scenario!r}; use 'list' to see available incidents")
     result = investigate(incidents[args.scenario])

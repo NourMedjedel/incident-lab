@@ -7,13 +7,14 @@ from pathlib import Path
 from platform import python_version
 
 from .baseline import investigate
-from .replay import fixture_manifest, load_incidents, read_resource
+from .replay import fixture_manifest, load_incidents, read_resource, suite_resources
 
 
-def evaluate(investigator=None, *, engine: str = "rules-v1") -> dict:
+def evaluate(investigator=None, *, engine: str = "rules-v1", suite: str = "development") -> dict:
     runner = investigator or investigate
-    incidents = load_incidents()
-    labels = read_resource("ground_truth.json")["labels"]
+    incidents = load_incidents(suite)
+    label_resource = read_resource(suite_resources(suite)[1])
+    labels = label_resource["labels"]
     if set(labels) != set(incidents):
         raise ValueError("Every incident must have exactly one evaluation label")
     cases = []
@@ -64,7 +65,8 @@ def evaluate(investigator=None, *, engine: str = "rules-v1") -> dict:
     ]
     return {
         "engine": engine,
-        "fixture_version": "1",
+        "fixture_version": label_resource.get("fixture_version", "1"),
+        "suite": suite,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "python_version": python_version(),
         "scope": "Small synthetic development suite; not a held-out or production benchmark.",
@@ -72,6 +74,8 @@ def evaluate(investigator=None, *, engine: str = "rules-v1") -> dict:
             "case_count": len(cases),
             "behavior_correct_count": sum(case["correct"] for case in cases),
             "answered_count": len(answers),
+            "incorrect_hypothesis_count": sum(not case["correct"] for case in answers),
+            "completed_count": sum(case["status"] in {"hypothesis", "abstained"} for case in cases),
             "answer_coverage": len(answers) / len(cases),
             "diagnostic_recall": sum(case["correct"] for case in diagnoses) / len(diagnoses)
             if diagnoses
@@ -140,7 +144,7 @@ def render_report(result: dict) -> str:
     return "\n".join(rows)
 
 
-def compare(provider, *, progress=None, **agent_options) -> dict:
+def compare(provider, *, progress=None, suite: str = "development", **agent_options) -> dict:
     from .agent import investigate_agent
 
     if not provider.live:
@@ -160,9 +164,10 @@ def compare(provider, *, progress=None, **agent_options) -> dict:
         "scope": "Synthetic development cases; results do not establish production effectiveness.",
         "provider": provider.name,
         "model": provider.model,
-        "provenance": {"fixture_sha256": fixture_manifest(), "source": "new-inference"},
-        "baseline": evaluate(),
-        "agent": evaluate(runner, engine="langgraph-agent-v1"),
+        "suite": suite,
+        "provenance": {"fixture_sha256": fixture_manifest(suite), "source": "new-inference"},
+        "baseline": evaluate(suite=suite),
+        "agent": evaluate(runner, engine="langgraph-agent-v2", suite=suite),
         "agent_traces": traces,
     }
 
@@ -175,7 +180,8 @@ def replay_comparison(path: str | Path) -> dict:
         saved = json.loads(raw_bytes)
         if not isinstance(saved, dict):
             raise ValueError("The artifact must be a JSON object")
-        if saved.get("provenance", {}).get("fixture_sha256") != fixture_manifest():
+        suite = saved.get("suite", "development")
+        if saved.get("provenance", {}).get("fixture_sha256") != fixture_manifest(suite):
             raise ValueError(
                 "Fixture hashes do not match this checkout; use the source version matching the artifact"
             )
@@ -183,7 +189,7 @@ def replay_comparison(path: str | Path) -> dict:
             raise ValueError(
                 "Replay requires a recorded real-model comparison, not scripted messages"
             )
-        incidents = load_incidents()
+        incidents = load_incidents(suite)
         traces = saved["agent_traces"]
         if not isinstance(traces, dict) or set(traces) != set(incidents):
             raise ValueError("The artifact must contain exactly one trace for every fixture")
@@ -195,7 +201,7 @@ def replay_comparison(path: str | Path) -> dict:
                 or trace["as_of"] != incident.cutoff
                 or trace["provider"] != saved["provider"]
                 or trace["model"] != saved["model"]
-                or trace["engine"] != "langgraph-agent-v1"
+                or trace["engine"] not in {"langgraph-agent-v1", "langgraph-agent-v2"}
                 or trace["mode"] != "synthetic-fixture-replay"
                 or trace["status"] not in {"hypothesis", "abstained", "failed"}
             ):
@@ -205,8 +211,10 @@ def replay_comparison(path: str | Path) -> dict:
         result = {
             **saved,
             "scope": "Offline replay of saved predictions; no new inference. Recorded timings and token usage are historical.",
-            "baseline": evaluate(),
-            "agent": evaluate(lambda incident: traces[incident.id], engine="langgraph-agent-v1"),
+            "baseline": evaluate(suite=suite),
+            "agent": evaluate(
+                lambda incident: traces[incident.id], engine=saved["agent"]["engine"], suite=suite
+            ),
             "replay": {
                 "source_sha256": hashlib.sha256(raw_bytes).hexdigest(),
                 "new_model_requests": 0,
@@ -237,6 +245,7 @@ def render_comparison(result: dict) -> str:
         "answered_count",
         "diagnostic_recall",
         "failed_count",
+        "incorrect_hypothesis_count",
         "llm_calls",
         "input_tokens",
         "output_tokens",

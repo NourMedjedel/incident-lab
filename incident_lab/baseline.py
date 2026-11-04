@@ -42,9 +42,11 @@ RULES = (
 )
 
 
-def investigate(incident: Incident) -> dict:
+def investigate(incident: Incident, *, gateway: ToolGateway | None = None) -> dict:
     started = perf_counter()
-    gateway = ToolGateway(incident)
+    if gateway is not None and gateway.incident != incident:
+        raise ValueError("Evidence gateway and incident must match")
+    gateway = gateway or ToolGateway(incident)
     errors = []
 
     def collect(name: str, **kwargs) -> list[dict]:
@@ -110,7 +112,8 @@ def investigate(incident: Incident) -> dict:
         "service": incident.service,
         "as_of": incident.cutoff,
         "engine": "rules-v1",
-        "mode": "synthetic-fixture-replay",
+        "mode": getattr(gateway, "mode", "synthetic-fixture-replay"),
+        "evidence_source": gateway.describe(),
         "status": "hypothesis" if selected else "abstained",
         "suspected_cause": cause,
         "explanation": explanation,

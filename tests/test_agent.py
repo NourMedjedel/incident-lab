@@ -194,7 +194,7 @@ class AgentTests(TestCase):
 
     def test_text_only_reply_is_not_accepted_as_a_diagnosis(self):
         provider = FakeProvider([[{"type": "text", "text": "Definitely a database issue."}]])
-        result = investigate_agent(self.incident, provider)
+        result = investigate_agent(self.incident, provider, max_model_calls=1)
         self.assertEqual("failed", result["status"])
         self.assertIsNone(result["suspected_cause"])
         self.assertEqual("assistant", result["conversation"][-1]["role"])
@@ -224,7 +224,7 @@ class AgentTests(TestCase):
 
     def test_only_ticket_metadata_is_sent_before_tool_results(self):
         provider = FakeProvider([[{"type": "text", "text": "No submission"}]])
-        investigate_agent(self.incident, provider)
+        investigate_agent(self.incident, provider, max_model_calls=1)
         content = provider.requests[0]["messages"][0]["content"]
         self.assertNotIn("log-pool", content)
         self.assertNotIn("ground_truth", content)

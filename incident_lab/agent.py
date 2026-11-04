@@ -7,10 +7,11 @@ from time import perf_counter
 from typing import TypedDict
 
 from .models import Incident, instant
+from .policy import assess_evidence
 from .providers import ModelProvider, ProviderError
 from .tools import ToolError, ToolGateway
 
-PROMPT_VERSION = "investigator-v1"
+PROMPT_VERSION = "investigator-v2.1"
 CAUSES = [
     "invalid_configuration",
     "dependency_timeout",
@@ -31,6 +32,12 @@ conflicting, or required telemetry is unavailable. An unavailable tool is not an
 Finish by calling submit_investigation alone, in a separate turn from evidence tools.
 Cite the exact IDs of evidence you actually fetched. Keep explanations brief and factual.
 Do not assign numerical confidence. Propose only an operator-reviewed next step.
+The backend requires a recognized diagnostic error event for a hypothesis.
+Configuration/application hypotheses also need a preceding matching change.
+Connection-pool exhaustion needs corroborating busy/maximum and queue metrics.
+Unresolved competing signals require abstention. Generic HTTP errors alone do
+not support a configuration diagnosis. If a submission is rejected, correct it
+using the feedback; a plain-text answer is not a completed investigation.
 """
 
 
@@ -120,6 +127,7 @@ class AgentState(TypedDict):
     done: bool
     final: dict | None
     stop_reason: str
+    repairs: int
 
 
 def validate_submission(payload: object, seen: dict[str, dict], gateway: ToolGateway) -> dict:
@@ -183,6 +191,23 @@ def validate_submission(payload: object, seen: dict[str, dict], gateway: ToolGat
         )
         if not recent:
             raise ToolError("A hypothesis requires recent supporting telemetry")
+        assessment = assess_evidence(gateway.incident, list(seen.values()))
+        if assessment["decision"] == "conflicting":
+            raise ToolError(
+                "EVIDENCE_CONFLICT: competing supported causes remain unresolved; abstain"
+            )
+        support = assessment["supported_candidates"].get(cause)
+        if not support:
+            raise ToolError(
+                "INSUFFICIENT_EVIDENCE: the selected cause lacks its minimum telemetry contract; abstain or fetch more evidence"
+            )
+        if not any(
+            set(group) <= set(payload["evidence_ids"])
+            for group in assessment["supporting_sets"][cause]
+        ):
+            raise ToolError(
+                "MISSING_SUPPORTING_CITATIONS: cite the diagnostic signal and its corroborating records"
+            )
     return payload
 
 
@@ -194,6 +219,8 @@ def investigate_agent(
     max_tool_calls: int = 8,
     input_rate: float | None = None,
     output_rate: float | None = None,
+    gateway: ToolGateway | None = None,
+    max_repairs: int = 2,
 ) -> dict:
     """Run a new graph for each incident; a provider never gets fixture objects."""
     try:
@@ -203,6 +230,8 @@ def investigate_agent(
     for value, bound in ((max_model_calls, 20), (max_tool_calls, 32)):
         if type(value) is not int or not 1 <= value <= bound:
             raise ValueError(f"Budgets must be integers between 1 and {bound}")
+    if type(max_repairs) is not int or not 0 <= max_repairs <= 4:
+        raise ValueError("max_repairs must be an integer between 0 and 4")
     if (input_rate is None) != (output_rate is None):
         raise ValueError("Provide both input and output USD-per-million rates, or neither")
     for rate in (input_rate, output_rate):
@@ -210,7 +239,10 @@ def investigate_agent(
             raise ValueError("Token rates must be finite and nonnegative")
 
     started = perf_counter()
-    gateway = ToolGateway(incident, max_calls=max_tool_calls)
+    if gateway is not None and gateway.incident != incident:
+        raise ValueError("Evidence gateway and incident must match")
+    gateway = gateway or ToolGateway(incident, max_calls=max_tool_calls)
+    max_tool_calls = min(max_tool_calls, gateway.max_calls)
     seen: dict[str, dict] = {}
     events: list[dict] = []
     errors: list[str] = []
@@ -223,10 +255,29 @@ def investigate_agent(
         turn = state["model_turns"] + 1
         tick = perf_counter()
         event = {"turn": turn, "provider": provider.name, "model": provider.model}
-        try:
-            reply = provider.complete(
-                system=SYSTEM, messages=state["messages"], tools=tool_definitions()
+        definitions = tool_definitions()
+        attempted = {span["tool"] for span in gateway.trace}
+        successful = {span["tool"] for span in gateway.trace if span["status"] == "ok"}
+        assessment = assess_evidence(incident, list(seen.values()))
+        # A coherent snapshot's complete primary telemetry cannot be made
+        # sufficient by rereading it or by finding suggestive runbook prose.
+        # Expose only the admissible final operation when escalation is required.
+        terminal_abstention = TELEMETRY_TOOLS <= attempted and (
+            not TELEMETRY_TOOLS <= successful or assessment["decision"] != "supported"
+        )
+        if terminal_abstention:
+            final_tool = definitions[-1]
+            properties = final_tool["input_schema"]["properties"]
+            properties["status"] = {"type": "string", "enum": ["abstained"]}
+            properties["suspected_cause"] = {"type": "null", "enum": [None]}
+            final_tool["description"] = (
+                "Required escalation: primary evidence is insufficient, conflicting, or unavailable. Submit status=abstained with suspected_cause=null, explaining what needs human review. No further evidence operation is admissible for this fixed snapshot."
             )
+            definitions = [final_tool]
+        event["offered_tools"] = [tool["name"] for tool in definitions]
+        event["required_abstention"] = terminal_abstention
+        try:
+            reply = provider.complete(system=SYSTEM, messages=state["messages"], tools=definitions)
         except ProviderError as error:
             usage_complete = False
             event.update(status="error", error=str(error))
@@ -264,6 +315,30 @@ def investigate_agent(
         ids = [call.get("id") for call in calls]
         if (
             not calls
+            and reply.content
+            and all(
+                block.get("type") == "text" and isinstance(block.get("text"), str)
+                for block in reply.content
+            )
+            and turn < max_model_calls
+            and state["repairs"] < max_repairs
+        ):
+            event["status"] = "protocol_repair"
+            errors.append("TEXT_ONLY_RESPONSE: requested a structured submission")
+            return {
+                "model_turns": turn,
+                "calls": [],
+                "repairs": state["repairs"] + 1,
+                "messages": next_messages
+                + [
+                    {
+                        "role": "user",
+                        "content": "Use submit_investigation with the declared fields. If evidence is missing or conflicting, submit status=abstained and suspected_cause=null. Do not invent citations or infer that a failed telemetry tool returned no evidence.",
+                    }
+                ],
+            }
+        if (
+            not calls
             or len(calls) > 33
             or not all(isinstance(id, str) and id for id in ids)
             or len(set(ids)) != len(ids)
@@ -282,6 +357,7 @@ def investigate_agent(
     def tools_node(state: AgentState) -> dict:
         results = []
         final = None
+        rejected_submission = False
         for call in state["calls"]:
             try:
                 name = call.get("name")
@@ -306,6 +382,8 @@ def investigate_agent(
                     {"type": "tool_result", "tool_use_id": call["id"], "content": json.dumps(value)}
                 )
             except ToolError as error:
+                if call.get("name") == "submit_investigation":
+                    rejected_submission = True
                 errors.append(str(error))
                 results.append(
                     {
@@ -317,10 +395,16 @@ def investigate_agent(
                 )
         if final is not None:
             return {"done": True, "final": final, "stop_reason": "submitted"}
-        return {"messages": state["messages"] + [{"role": "user", "content": results}]}
+        updates = {
+            "messages": state["messages"] + [{"role": "user", "content": results}],
+            "repairs": state["repairs"] + int(rejected_submission),
+        }
+        if rejected_submission and state["repairs"] >= max_repairs:
+            updates.update(done=True, stop_reason="repair_budget_exhausted")
+        return updates
 
     def route_after_model(state: AgentState) -> str:
-        return END if state["done"] else "tools"
+        return END if state["done"] else "tools" if state["calls"] else "model"
 
     def route_after_tools(state: AgentState) -> str:
         if state["done"] or state["model_turns"] >= max_model_calls:
@@ -331,7 +415,9 @@ def investigate_agent(
     graph.add_node("model", model_node)
     graph.add_node("tools", tools_node)
     graph.add_edge(START, "model")
-    graph.add_conditional_edges("model", route_after_model, {END: END, "tools": "tools"})
+    graph.add_conditional_edges(
+        "model", route_after_model, {END: END, "tools": "tools", "model": "model"}
+    )
     graph.add_conditional_edges("tools", route_after_tools, {END: END, "model": "model"})
     state = graph.compile().invoke(
         {
@@ -352,6 +438,7 @@ def investigate_agent(
             "done": False,
             "final": None,
             "stop_reason": "",
+            "repairs": 0,
         },
         config={"recursion_limit": 2 * max_model_calls + 4},
     )
@@ -367,11 +454,16 @@ def investigate_agent(
         "incident_id": incident.id,
         "service": incident.service,
         "as_of": incident.cutoff,
-        "engine": "langgraph-agent-v1" if provider.live else "scripted-protocol-demo",
-        "mode": "synthetic-fixture-replay" if provider.live else "scripted-demo-no-inference",
+        "engine": "langgraph-agent-v2" if provider.live else "scripted-protocol-demo",
+        "mode": getattr(gateway, "mode", "synthetic-fixture-replay")
+        if provider.live
+        else "scripted-demo-no-inference",
         "provider": provider.name,
         "model": provider.model,
         "prompt_version": PROMPT_VERSION,
+        "controller_version": "admissible-actions-v1",
+        "evidence_policy": assess_evidence(incident, list(seen.values())),
+        "evidence_source": gateway.describe(),
         "status": status,
         "suspected_cause": final["suspected_cause"] if final else None,
         "explanation": final["explanation"]
@@ -408,7 +500,12 @@ def investigate_agent(
             "input_usd_per_million": input_rate,
             "output_usd_per_million": output_rate,
         },
-        "limits": {"max_model_calls": max_model_calls, "max_tool_calls": max_tool_calls},
+        "limits": {
+            "max_model_calls": max_model_calls,
+            "max_tool_calls": max_tool_calls,
+            "max_repairs": max_repairs,
+        },
+        "repairs_used": state["repairs"],
         "limitations": [
             "Citation checks establish provenance, not semantic correctness.",
             "Synthetic fixtures are not a held-out or production benchmark.",

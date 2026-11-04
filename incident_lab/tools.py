@@ -19,6 +19,20 @@ class ToolGateway:
         self.max_calls = max_calls
         self.trace: list[dict] = []
 
+    def describe(self) -> dict:
+        return {"kind": "fixture", "incident_id": self.incident.id}
+
+    def read(self, name: str, arguments: dict) -> list[dict]:
+        if name == "search_runbooks":
+            return [
+                {**asdict(item["record"]), "retrieval_score": item["score"]}
+                for item in search_runbooks(
+                    self.incident, arguments["query"], arguments.get("limit", 3)
+                )
+            ]
+        kind = {"get_logs": "log", "get_metrics": "metric", "get_deployments": "deployment"}[name]
+        return [asdict(record) for record in visible_records(self.incident, kind)]
+
     def call(self, name: str, /, **arguments) -> list[dict]:
         started = perf_counter()
         span = {
@@ -46,18 +60,7 @@ class ToolGateway:
                     raise ToolError("limit must be an integer between 1 and 10")
             if name in self.incident.unavailable_tools:
                 raise ToolError(f"Replay fault: {name} is unavailable")
-            if name == "search_runbooks":
-                result = [
-                    {**asdict(item["record"]), "retrieval_score": item["score"]}
-                    for item in search_runbooks(self.incident, query, limit)
-                ]
-            else:
-                kind = {
-                    "get_logs": "log",
-                    "get_metrics": "metric",
-                    "get_deployments": "deployment",
-                }[name]
-                result = [asdict(record) for record in visible_records(self.incident, kind)]
+            result = self.read(name, arguments)
             span["evidence_ids"] = [item["id"] for item in result]
             return result
         except ToolError as error:
